@@ -1,11 +1,12 @@
 package fr.arolla.ddd9;
 
-import cucumber.annotation.en.And;
-import cucumber.annotation.en.Given;
-import cucumber.annotation.en.Then;
-import cucumber.annotation.en.When;
-import cucumber.runtime.PendingException;
-import cucumber.table.DataTable;
+import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import io.cucumber.datatable.DataTable;
+
 
 public class FirstStepdefs {
     @When("^product catalog is called$")
