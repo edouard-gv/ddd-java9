@@ -55,6 +55,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-jvm</artifactId>
             <version>${cucumber.version}</version>
@@ -84,9 +90,6 @@
             <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
-
-
-
     </dependencies>
 
     <build>

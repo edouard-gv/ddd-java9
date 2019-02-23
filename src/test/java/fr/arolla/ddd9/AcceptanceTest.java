@@ -6,10 +6,9 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        //@TODO: comprendre pourquoi je suis obligé de mettre le chemin local...
-        features = "src/test/java/fr/arolla/ddd9"
+        features = "src/test/java/fr/arolla/ddd9/acceptance"
 )
 
-public class FirstStepTest {
+public class AcceptanceTest {
 
 }
