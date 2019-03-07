@@ -24,10 +24,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class FirstStepdefs {
+public class Stepdefs {
 
     @Autowired
-    public FirstStepdefs(ProductRepository productRepository, ProductService productService, CartService cartService, DateService dateService, ShippingServiceRepository shippingServiceRepository, OrderService orderService, DeliveryService deliveryService) {
+    public Stepdefs(ProductRepository productRepository, ProductService productService, CartService cartService, DateService dateService, ShippingServiceRepository shippingServiceRepository, OrderService orderService, DeliveryService deliveryService) {
         this.productRepository = productRepository;
         this.productService = productService;
         this.cartService = cartService;
