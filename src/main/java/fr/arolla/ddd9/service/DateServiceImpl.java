@@ -14,9 +14,4 @@ public class DateServiceImpl implements DateService {
     public Calendar getCurrentDate() {
         return (forcedCalendar != null ? forcedCalendar : new GregorianCalendar());
     }
-
-    @Override
-    public void forceCalendar(Calendar now) {
-        this.forcedCalendar = now;
-    }
 }

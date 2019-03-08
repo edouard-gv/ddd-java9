@@ -4,6 +4,4 @@ import java.util.Calendar;
 
 public interface DateService {
     Calendar getCurrentDate();
-
-    void forceCalendar(Calendar now);
 }

@@ -5,12 +5,12 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import fr.arolla.ddd9.BusinessException;
+import fr.arolla.ddd9.SpringBootBaseStepDefs;
 import fr.arolla.ddd9.entity.*;
 import fr.arolla.ddd9.service.*;
 import io.cucumber.datatable.DataTable;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
@@ -22,11 +22,20 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@ContextConfiguration
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class Stepdefs {
 
-    @Autowired
+public class Stepdefs extends SpringBootBaseStepDefs {
+
+    private ProductRepository productRepository;
+    private ProductService productService;
+    private CartService cartService;
+    private DateService dateService;
+    private ShippingServiceRepository shippingServiceRepository;
+    private OrderService orderService;
+    private DeliveryService deliveryService;
+    private CartId currentCartId;
+    private OrderId currentOrderId;
+    private DeliveryId currentDeliveryId;
+
     public Stepdefs(ProductRepository productRepository, ProductService productService, CartService cartService, DateService dateService, ShippingServiceRepository shippingServiceRepository, OrderService orderService, DeliveryService deliveryService) {
         this.productRepository = productRepository;
         this.productService = productService;
@@ -37,23 +46,14 @@ public class Stepdefs {
         this.deliveryService = deliveryService;
     }
 
-    private ProductRepository productRepository;
+    @TestConfiguration
+    static class TestContextConfiguration {
 
-    private ProductService productService;
-
-    private CartService cartService;
-
-    private DateService dateService;
-
-    private ShippingServiceRepository shippingServiceRepository;
-
-    private OrderService orderService;
-
-    private DeliveryService deliveryService;
-
-    private CartId currentCartId;
-    private OrderId currentOrderId;
-    private DeliveryId currentDeliveryId;
+        @Bean
+        public DateService dateService() {
+            return new DateServiceMock();
+        }
+    }
 
     @Before
     public void setup() throws Exception {
@@ -65,7 +65,7 @@ public class Stepdefs {
     public void nowIs(String arg0) throws Throwable {
         Calendar now = new GregorianCalendar();
         now.setTime(Date.from(Instant.from(ZonedDateTime.parse(arg0, DateTimeFormatter.ISO_OFFSET_DATE_TIME))));
-        dateService.forceCalendar(now);
+        ((DateServiceMock) dateService).forceCalendar(now);
     }
 
     @Given("^\"([^\"]*)\" as default locale$")
