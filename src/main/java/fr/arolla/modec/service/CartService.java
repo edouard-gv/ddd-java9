@@ -1,9 +1,6 @@
 package fr.arolla.modec.service;
 
-import fr.arolla.modec.entity.CartId;
-import fr.arolla.modec.entity.CartLine;
-import fr.arolla.modec.entity.Quantity;
-import fr.arolla.modec.entity.ShippingService;
+import fr.arolla.modec.entity.*;
 
 import java.util.List;
 
@@ -11,7 +8,7 @@ public interface CartService {
 
     CartId createCart();
 
-    void addToCart(CartId cartId, String sku, Quantity quantity);
+    void addToCart(CartId cartId, Sku sku, Quantity quantity);
 
     List<CartLine> getLines(CartId cartId);
 

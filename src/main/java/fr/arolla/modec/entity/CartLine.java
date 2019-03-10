@@ -8,7 +8,10 @@ public class CartLine {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    String productSku;
+    @Embedded
+    @Column(name = "productSku")
+    Sku productSku;
+
     String productName;
 
     @Embedded
@@ -17,13 +20,13 @@ public class CartLine {
     public CartLine() { //for JPA
     }
 
-    public CartLine(String productSku, String productName, Quantity quantity) {
+    public CartLine(Sku productSku, String productName, Quantity quantity) {
         this.productSku = productSku;
         this.productName = productName;
         this.quantity = quantity;
     }
 
-    public String getProductSku() {
+    public Sku getProductSku() {
         return productSku;
     }
 

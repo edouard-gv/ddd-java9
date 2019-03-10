@@ -8,7 +8,20 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Embedded
+    @Column(unique = true, nullable = false)
+    private Sku sku;
+
     private String name;
+
+    private String description;
+
+    @Embedded
+    private Weight weight;
+
+    public Sku getSku() {
+        return sku;
+    }
 
     public String getName() {
         return name;
@@ -18,21 +31,13 @@ public class Product {
         return description;
     }
 
-    private String description;
-
-    @Column(unique = true, nullable = false)
-    private String sku;
-
-    public String getSku() {
-        return sku;
-    }
-
     public Product() { //for JPA
     }
 
-    public Product(String sku, String name, String description) {
+    public Product(Sku sku, String name, String description, Weight weight) {
         this.sku = sku;
         this.name = name;
         this.description = description;
+        this.weight = weight;
     }
 }

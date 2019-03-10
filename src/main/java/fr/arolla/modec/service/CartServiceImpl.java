@@ -33,7 +33,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void addToCart(CartId cartId, String sku, Quantity quantity) {
+    public void addToCart(CartId cartId, Sku sku, Quantity quantity) {
         Product product = productRepository.findOneBySku(sku);
         CartLine line = new CartLine(sku, product.getName(), quantity);
         cartLineRepository.save(line);

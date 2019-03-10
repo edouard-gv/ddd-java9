@@ -8,7 +8,8 @@ public class OrderLine {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    String productSku;
+    @Embedded
+    Sku productSku;
     String productName;
 
     @Embedded
@@ -17,13 +18,13 @@ public class OrderLine {
     public OrderLine() { //for JPA
     }
 
-    public OrderLine(String productSku, String productName, Quantity quantity) {
+    public OrderLine(Sku productSku, String productName, Quantity quantity) {
         this.productSku = productSku;
         this.productName = productName;
         this.quantity = quantity;
     }
 
-    public String getProductSku() {
+    public Sku getProductSku() {
         return productSku;
     }
 

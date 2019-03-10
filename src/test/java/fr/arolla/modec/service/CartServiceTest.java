@@ -39,7 +39,7 @@ public class CartServiceTest {
 
     @Test
     public void FilledCartWithNoAddressShouldHaveNoShippingService() {
-        CartLine line = new CartLine("sku", "name", new Quantity(1));
+        CartLine line = new CartLine(new Sku("sku"), "name", new Quantity(1));
         cart.getLines().add(line);
         assertThat(cartService.getShippingServices(new CartId())).isEmpty();
     }
@@ -52,7 +52,7 @@ public class CartServiceTest {
 
     @Test
     public void FilledCartWithShippingShouldHaveAShippingService() {
-        CartLine line = new CartLine("sku", "name", new Quantity(1));
+        CartLine line = new CartLine(new Sku("sku"), "name", new Quantity(1));
         cart.getLines().add(line);
         cart.setShippingAddress(new ShippingAddress("fullName", "line1", "city","zipCode", "isoCountryCode"));
         assertThat(cartService.getShippingServices(new CartId()).size()).isEqualTo(1);

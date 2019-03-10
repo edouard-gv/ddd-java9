@@ -4,8 +4,8 @@ Feature: default cart
     Given now is "2018-10-08T13:00:00+01:00"
     Given "fr_FR" as default locale
     Given the following catalog:
-      | name | description    | SKU  |
-      | bike | A default bike | sku1 |
+      | name | description    | SKU  | weight |
+      | bike | A default bike | sku1 | 10     |
     Given the following shipping services:
       | code     | carrier    | level         |
       | Chrono10 | Chronopost | j+1 avant 13h |

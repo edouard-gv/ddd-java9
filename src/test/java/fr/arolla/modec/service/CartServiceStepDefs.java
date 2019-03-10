@@ -51,7 +51,7 @@ public class CartServiceStepDefs {
         List<Map<String, String>> lines = products.asMaps();
         for (Map<String, String> line : lines) {
             CartLine cartLine = new CartLine(
-                    line.get("sku"),
+                    new Sku(line.get("sku")),
                     line.get("name"),
                     new Quantity(Integer.valueOf(line.get("quantity")))
             );

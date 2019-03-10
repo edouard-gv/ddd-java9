@@ -79,7 +79,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
         productRepository.deleteAll();
         List<Map<String, String>> lines = products.asMaps();
         for (Map<String, String> line : lines) {
-            productRepository.save(new Product(line.get("SKU"), line.get("name"), line.get("description")));
+            productRepository.save(new Product(new Sku(line.get("SKU")), line.get("name"), line.get("description"), new Weight(Float.parseFloat(line.get("weight")))));
         }
     }
 
@@ -100,7 +100,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
     @Transactional
     @Given("^product \"([^\"]*)\" is added to this cart$")
     public void productIsAddedToThisCart(String sku) throws Throwable {
-        cartService.addToCart(this.currentCartId, sku, new Quantity(1));
+        cartService.addToCart(this.currentCartId, new Sku(sku), new Quantity(1));
     }
 
     @Transactional
@@ -116,7 +116,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
 
         for (Product product : productService.getList()) {
             Map<String, String> productMap = new HashMap<>();
-            productMap.put("SKU", product.getSku());
+            productMap.put("SKU", product.getSku().getSku());
             productMap.put("name", product.getName());
             actualList.add(productMap);
         }
@@ -130,7 +130,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
 
         for (CartLine cartLine : cartService.getLines(this.currentCartId)) {
             Map<String, String> cartLineMap = new HashMap<>();
-            cartLineMap.put("SKU", cartLine.getProductSku());
+            cartLineMap.put("SKU", cartLine.getProductSku().getSku());
             cartLineMap.put("name", cartLine.getProductName());
             cartLineMap.put("quantity", cartLine.getQuantity().toString());
             actualList.add(cartLineMap);

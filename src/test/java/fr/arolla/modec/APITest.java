@@ -1,6 +1,8 @@
 package fr.arolla.modec;
 
 import fr.arolla.modec.entity.Product;
+import fr.arolla.modec.entity.Sku;
+import fr.arolla.modec.entity.Weight;
 import fr.arolla.modec.repository.ProductRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,14 +35,14 @@ public class APITest {
 
     @Test
     public void productList() throws Exception {
-        productRepository.save(new Product("sku1", "bike", "A bike for everyone!"));
+        productRepository.save(new Product(new Sku("sku1"), "bike", "A bike for everyone!", new Weight(10)));
 
         TestRestTemplate testRestTemplate = new TestRestTemplate();
         ResponseEntity<String> response = testRestTemplate.
                 getForEntity("http://localhost:" + this.port + "/product", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        JSONAssert.assertEquals(cleanJson("[{'sku':'sku1', 'name':'bike', 'description':'A bike for everyone!'}]"),
+        JSONAssert.assertEquals(cleanJson("[{'sku':{sku:'sku1'}, 'name':'bike', 'description':'A bike for everyone!'}]"),
                 response.getBody(), false);
     }
 
