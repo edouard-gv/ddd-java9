@@ -10,6 +10,7 @@ import fr.arolla.modec.repository.ProductRepository;
 import fr.arolla.modec.repository.ShippingServiceRepository;
 import fr.arolla.modec.service.*;
 import io.cucumber.datatable.DataTable;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,21 +53,15 @@ public class StepDefs extends SpringBootBaseStepDefs {
 
         @Bean
         public DateService dateService() {
-            return new DateServiceMock();
+            return Mockito.mock(DateService.class);
         }
     }
 
-    @Before
-    public void setup() throws Exception {
-        // If mockito needed, need to initialize mockito when running with cucumber runner
-        //MockitoAnnotations.initMocks(this);
-    }
-
     @Given("^now is \"([^\"]*)\"$")
-    public void nowIs(String arg0) throws Throwable {
+    public void nowIs(String stringDate) throws Throwable {
         Calendar now = new GregorianCalendar();
-        now.setTime(Date.from(Instant.from(ZonedDateTime.parse(arg0, DateTimeFormatter.ISO_OFFSET_DATE_TIME))));
-        ((DateServiceMock) dateService).forceCalendar(now);
+        now.setTime(Date.from(Instant.from(ZonedDateTime.parse(stringDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME))));
+        Mockito.when(dateService.getCurrentDate()).thenReturn(now);
     }
 
     @Given("^\"([^\"]*)\" as default locale$")
