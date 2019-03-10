@@ -3,7 +3,7 @@ package fr.arolla.modec.entity;
 import org.junit.Test;
 
 
-public class EntityTest {
+public class QuantityTest {
     @Test
     public void quantity_can_be_null() {
         Quantity quantity = new Quantity(0);

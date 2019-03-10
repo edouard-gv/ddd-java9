@@ -1,5 +1,6 @@
-package fr.arolla.modec.service;
+package fr.arolla.modec.acceptance;
 
+import fr.arolla.modec.service.DateService;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.stereotype.Service;
 

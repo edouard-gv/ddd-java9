@@ -2,14 +2,9 @@ package fr.arolla.modec.repository;
 
 import fr.arolla.modec.entity.Cart;
 import fr.arolla.modec.entity.CartId;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface CartRepository {
-
-    public Optional<Cart> findById(CartId cartId);
-
-    public Cart save(Cart cart);
+public interface CartRepository extends CrudRepository<Cart, CartId> {
 }
