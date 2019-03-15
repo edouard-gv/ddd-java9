@@ -5,7 +5,6 @@ import fr.arolla.modec.repository.CartLineRepository;
 import fr.arolla.modec.repository.CartRepository;
 import fr.arolla.modec.repository.ProductRepository;
 import fr.arolla.modec.repository.ShippingServiceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,6 @@ public class CartService {
     private final CartLineRepository cartLineRepository;
     private final ShippingServiceRepository shippingServiceRepository;
 
-    @Autowired
     public CartService(CartRepository cartRepository, ProductRepository productRepository, CartLineRepository cartLineRepository, ShippingServiceRepository shippingServiceRepository) {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
