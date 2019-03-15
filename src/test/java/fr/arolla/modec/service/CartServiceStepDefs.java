@@ -61,7 +61,7 @@ public class CartServiceStepDefs {
 
     @When("^\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" in \"([^\"]*)\" is set as the shipping address of current cart$")
     public void inIsSetAsTheShippingAddressOfCurrentCart(String fullName, String line1, String city, String zipCode, String isoCountryCode) throws Throwable {
-        currentCart.setShippingAddress(new ShippingAddress(fullName, line1, city,zipCode, isoCountryCode));
+        currentCart.setShippingAddress(new ShippingAddress(fullName, line1, city, zipCode, isoCountryCode));
 
     }
 

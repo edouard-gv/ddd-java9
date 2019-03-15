@@ -6,7 +6,6 @@ import fr.arolla.modec.repository.CartRepository;
 import fr.arolla.modec.repository.ProductRepository;
 import fr.arolla.modec.repository.ShippingServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;

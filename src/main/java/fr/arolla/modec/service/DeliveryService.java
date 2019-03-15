@@ -5,7 +5,6 @@ import fr.arolla.modec.entity.Order;
 import fr.arolla.modec.entity.OrderId;
 import fr.arolla.modec.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 public class DeliveryService {
 
