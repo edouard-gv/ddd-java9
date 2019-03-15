@@ -1,6 +1,5 @@
 package fr.arolla.modec.acceptance;
 
-import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -30,7 +29,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
     private ProductRepository productRepository;
     private ProductService productService;
     private CartService cartService;
-    private DateService dateService;
+    private Timestamp timestamp;
     private ShippingServiceRepository shippingServiceRepository;
     private OrderService orderService;
     private DeliveryService deliveryService;
@@ -38,11 +37,11 @@ public class StepDefs extends SpringBootBaseStepDefs {
     private OrderId currentOrderId;
     private DeliveryId currentDeliveryId;
 
-    public StepDefs(ProductRepository productRepository, ProductService productService, CartService cartService, DateService dateService, ShippingServiceRepository shippingServiceRepository, OrderService orderService, DeliveryService deliveryService) {
+    public StepDefs(ProductRepository productRepository, ProductService productService, CartService cartService, Timestamp timestamp, ShippingServiceRepository shippingServiceRepository, OrderService orderService, DeliveryService deliveryService) {
         this.productRepository = productRepository;
         this.productService = productService;
         this.cartService = cartService;
-        this.dateService = dateService;
+        this.timestamp = timestamp;
         this.shippingServiceRepository = shippingServiceRepository;
         this.orderService = orderService;
         this.deliveryService = deliveryService;
@@ -52,8 +51,8 @@ public class StepDefs extends SpringBootBaseStepDefs {
     static class TestContextConfiguration {
 
         @Bean
-        public DateService dateService() {
-            return Mockito.mock(DateService.class);
+        public Timestamp timestamp() {
+            return Mockito.mock(Timestamp.class);
         }
     }
 
@@ -61,7 +60,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
     public void nowIs(String stringDate) throws Throwable {
         Calendar now = new GregorianCalendar();
         now.setTime(Date.from(Instant.from(ZonedDateTime.parse(stringDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME))));
-        Mockito.when(dateService.getCurrentDate()).thenReturn(now);
+        Mockito.when(timestamp.getCurrentDate()).thenReturn(now);
     }
 
     @Given("^\"([^\"]*)\" as default locale$")

@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 @Service
-public class DateServiceImpl implements DateService {
+public class TimestampSystem implements Timestamp {
 
     private Calendar forcedCalendar;
 

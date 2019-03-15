@@ -15,14 +15,14 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private final CartRepository cartRepository;
-    private final DateService dateService;
+    private final Timestamp timestamp;
     private final OrderRepository orderRepository;
     private final OrderLineRepository orderLineRepository;
 
     @Autowired
-    public OrderServiceImpl(CartRepository cartRepository, DateService dateService, OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
+    public OrderServiceImpl(CartRepository cartRepository, Timestamp timestamp, OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
         this.cartRepository = cartRepository;
-        this.dateService = dateService;
+        this.timestamp = timestamp;
         this.orderRepository = orderRepository;
         this.orderLineRepository = orderLineRepository;
     }
@@ -35,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(cartLine -> orderLineRepository.save(new OrderLine(cartLine.getProductSku(), cartLine.getProductName(), cartLine.getQuantity())))
                 .collect(Collectors.toList()),
-                dateService.getCurrentDate(),
+                timestamp.getCurrentDate(),
                 cart.getRecipient(),
                 cart.getShippingAddress());
         order.setStatus(Order.Status.CREATED);
