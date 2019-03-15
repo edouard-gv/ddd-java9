@@ -37,9 +37,9 @@ public class StepDefs extends SpringBootBaseStepDefs {
     private OrderId currentOrderId;
     private DeliveryId currentDeliveryId;
 
-    public StepDefs(ProductRepository productRepository, ProductService productService, CartService cartService, Timestamp timestamp, ShippingServiceRepository shippingServiceRepository, OrderService orderService, DeliveryService deliveryService) {
+    public StepDefs(ProductRepository productRepository, CartService cartService, Timestamp timestamp, ShippingServiceRepository shippingServiceRepository, OrderService orderService, DeliveryService deliveryService) {
         this.productRepository = productRepository;
-        this.productService = productService;
+        this.productService = new ProductService(productRepository);
         this.cartService = cartService;
         this.timestamp = timestamp;
         this.shippingServiceRepository = shippingServiceRepository;
