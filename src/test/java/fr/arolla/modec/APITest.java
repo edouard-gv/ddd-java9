@@ -28,9 +28,6 @@ public class APITest {
     private int port;
 
     @Autowired
-    private TestRestTemplate restTemplate;
-
-    @Autowired
     private ProductRepository productRepository;
 
     @Test
