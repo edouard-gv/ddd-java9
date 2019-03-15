@@ -6,12 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository {
+public interface ProductRepositoryHibernate extends ProductRepository, CrudRepository<Product, Long> {
     Product findOneBySku(Sku sku);
-
-    Iterable<Product> findAll();
-
-    void deleteAll();
-
-    Product save(Product product);
 }
