@@ -8,10 +8,8 @@ import java.util.GregorianCalendar;
 @Service
 public class TimestampSystem implements Timestamp {
 
-    private Calendar forcedCalendar;
-
     @Override
     public Calendar getCurrentDate() {
-        return (forcedCalendar != null ? forcedCalendar : new GregorianCalendar());
+        return new GregorianCalendar();
     }
 }
