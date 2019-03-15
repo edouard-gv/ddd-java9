@@ -1,7 +1,8 @@
-package fr.arolla.modec.repository;
+package fr.arolla.modec.repository.impl;
 
 import fr.arolla.modec.entity.Order;
 import fr.arolla.modec.entity.OrderId;
+import fr.arolla.modec.repository.OrderRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,5 +1,6 @@
-package fr.arolla.modec.service;
+package fr.arolla.modec.service.system.impl;
 
+import fr.arolla.modec.service.system.Timestamp;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
