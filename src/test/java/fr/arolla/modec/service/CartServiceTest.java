@@ -29,7 +29,7 @@ public class CartServiceTest {
         cart = new Cart();
         Mockito.when(cartRepository.findById(Mockito.any())).thenReturn(Optional.of(cart));
         Mockito.when(shippingServiceRepository.findOneByCode("Chrono10")).thenReturn(new ShippingService("code", "Chrono10", "level"));
-        cartService = new CartServiceImpl(cartRepository, null, null, shippingServiceRepository);
+        cartService = new CartService(cartRepository, null, null, shippingServiceRepository);
     }
 
     @Test

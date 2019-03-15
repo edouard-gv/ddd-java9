@@ -5,8 +5,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import fr.arolla.modec.BusinessException;
 import fr.arolla.modec.entity.*;
-import fr.arolla.modec.repository.ProductRepository;
-import fr.arolla.modec.repository.ShippingServiceRepository;
+import fr.arolla.modec.repository.*;
 import fr.arolla.modec.service.*;
 import io.cucumber.datatable.DataTable;
 import org.mockito.Mockito;
@@ -37,14 +36,14 @@ public class StepDefs extends SpringBootBaseStepDefs {
     private OrderId currentOrderId;
     private DeliveryId currentDeliveryId;
 
-    public StepDefs(ProductRepository productRepository, CartService cartService, Timestamp timestamp, ShippingServiceRepository shippingServiceRepository, OrderService orderService, DeliveryService deliveryService) {
+    public StepDefs(ProductRepository productRepository, Timestamp timestamp, ShippingServiceRepository shippingServiceRepository, CartRepository cartRepository, CartLineRepository cartLineRepository, OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
         this.productRepository = productRepository;
         this.productService = new ProductService(productRepository);
-        this.cartService = cartService;
+        this.cartService = new CartService(cartRepository, productRepository, cartLineRepository, shippingServiceRepository);
         this.timestamp = timestamp;
         this.shippingServiceRepository = shippingServiceRepository;
-        this.orderService = orderService;
-        this.deliveryService = deliveryService;
+        this.orderService =  new OrderService(cartRepository, timestamp, orderRepository, orderLineRepository);
+        this.deliveryService = new DeliveryService(orderRepository);
     }
 
     @TestConfiguration

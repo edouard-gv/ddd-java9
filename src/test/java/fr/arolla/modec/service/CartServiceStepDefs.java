@@ -29,7 +29,7 @@ public class CartServiceStepDefs {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        cartService = new CartServiceImpl(cartRepository, null, null, shippingServiceRepository);
+        cartService = new CartService(cartRepository, null, null, shippingServiceRepository);
     }
 
     @Given("^the following mocked shipping services:$")
