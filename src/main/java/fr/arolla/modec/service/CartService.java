@@ -47,7 +47,14 @@ public class CartService {
         List<ShippingService> servicesFound = new ArrayList<>();
         Cart cart = cartRepository.findById(cartId).get();
         if (cart.getShippingAddress() != null && !cart.getLines().isEmpty()) {
-            servicesFound.add(shippingServiceRepository.findOneByCode("Chrono10"));
+            Sku firstProductSku = cart.getLines().get(0).getProductSku();
+            Product firstProduct = productRepository.findOneBySku(firstProductSku);
+            if (firstProduct.getWeight().getWeight() >= 1) {
+                servicesFound.add(shippingServiceRepository.findOneByCode("Chrono10"));
+            }
+            else {
+                servicesFound.add(shippingServiceRepository.findOneByCode("laposte"));
+            }
         }
         return servicesFound;
     }

@@ -31,6 +31,10 @@ public class Product {
         return description;
     }
 
+    public Weight getWeight() {
+        return weight;
+    }
+
     public Product() { //for JPA
     }
 

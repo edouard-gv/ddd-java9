@@ -4,23 +4,23 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class Weight {
-    private float weight;
+    private double weight;
 
     public Weight() {
     }
 
-    public Weight(float weight) {
+    public Weight(double weight) {
         this.weight = weight;
     }
 
-    public float getWeight() {
+    public double getWeight() {
         return weight;
     }
 
     @Override
     public String toString() {
         return "Weight{" +
-                "quantity=" + weight +
+                "weight=" + weight +
                 '}';
     }
 }

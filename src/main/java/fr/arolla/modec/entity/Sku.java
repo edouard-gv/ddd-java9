@@ -1,6 +1,7 @@
 package fr.arolla.modec.entity;
 
 import javax.persistence.Embeddable;
+import java.util.Objects;
 
 @Embeddable
 public class Sku {
@@ -20,7 +21,20 @@ public class Sku {
     @Override
     public String toString() {
         return "Sku{" +
-                "quantity='" + sku + '\'' +
+                "sku='" + sku + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Sku)) return false;
+        Sku sku1 = (Sku) o;
+        return Objects.equals(sku, sku1.sku);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sku);
     }
 }
