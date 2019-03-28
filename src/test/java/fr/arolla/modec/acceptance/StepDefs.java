@@ -110,7 +110,8 @@ public class StepDefs extends SpringBootBaseStepDefs {
     @Transactional
     @Given("^\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" in \"([^\"]*)\" is set as the shipping address of this cart$")
     public void inIsSetAsTheShippingAddressOfThisCart(String fullName, String line1, String city, String zipCode, String isoCountryCode) throws Throwable {
-        cartService.setShippingAddress(this.currentCartId, fullName, line1, city, zipCode, isoCountryCode);
+        ShippingAddress shippingAddress = new ShippingAddress(fullName, line1, city, zipCode, isoCountryCode);
+        cartService.setShippingAddress(this.currentCartId, shippingAddress);
     }
 
     @Transactional
@@ -159,7 +160,8 @@ public class StepDefs extends SpringBootBaseStepDefs {
     @Transactional
     @And("^\"([^\"]*)\" with email address \"([^\"]*)\" is set as the recipient$")
     public void withEmailAdressIsSetAsTheRecipient(String fullName, String eMail) throws Throwable {
-        cartService.setRecipient(currentCartId, fullName, eMail);
+        Recipient recipient = new Recipient(fullName, eMail);
+        cartService.setRecipient(currentCartId, recipient);
     }
 
     @Transactional

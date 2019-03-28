@@ -38,9 +38,8 @@ public class CartService {
         return findOrFail(cartId).getLines();
     }
 
-    public void setShippingAddress(CartId cartId, String fullName, String line1, String city, String zipCode, String isoCountryCode) {
-        ShippingAddress address = new ShippingAddress(fullName, line1, city, zipCode, isoCountryCode);
-        findOrFail(cartId).setShippingAddress(address);
+    public void setShippingAddress(CartId cartId, ShippingAddress shippingAddress) {
+        findOrFail(cartId).setShippingAddress(shippingAddress);
     }
 
     public List<ShippingService> getShippingServices(CartId cartId) {
@@ -59,8 +58,7 @@ public class CartService {
         return servicesFound;
     }
 
-    public void setRecipient(CartId cartId, String fullName, String eMail) {
-        Recipient recipient = new Recipient(fullName, eMail);
+    public void setRecipient(CartId cartId, Recipient recipient) {
         findOrFail(cartId).setRecipient(recipient);
     }
 
