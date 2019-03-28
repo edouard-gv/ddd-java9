@@ -1,8 +1,7 @@
 package fr.arolla.modec.entity;
 
 import javax.persistence.*;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -19,7 +18,7 @@ public class Order {
 
     private Status status;
 
-    private Date creationDate;
+    private Instant creationDate;
 
     @Embedded
     private ShippingAddress shippingAddress;
@@ -30,7 +29,7 @@ public class Order {
     public Order() { // for JPA
     }
 
-    public Order(List<OrderLine> lines, Date creationDate, Recipient recipient, ShippingAddress shippingAddress) {
+    public Order(List<OrderLine> lines, Instant creationDate, Recipient recipient, ShippingAddress shippingAddress) {
         this.lines = lines;
         this.creationDate = creationDate;
         this.recipient = recipient;
@@ -57,7 +56,7 @@ public class Order {
         this.status = status;
     }
 
-    public Date getCreationDate() {
+    public Instant getCreationDate() {
         return creationDate;
     }
 

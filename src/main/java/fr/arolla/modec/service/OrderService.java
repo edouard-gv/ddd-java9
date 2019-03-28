@@ -7,19 +7,20 @@ import fr.arolla.modec.repository.OrderLineRepository;
 import fr.arolla.modec.repository.OrderRepository;
 import fr.arolla.modec.service.system.Timestamp;
 
+import java.time.Clock;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class OrderService {
 
     private final CartRepository cartRepository;
-    private final Timestamp timestamp;
+    private final Clock clock;
     private final OrderRepository orderRepository;
     private final OrderLineRepository orderLineRepository;
 
-    public OrderService(CartRepository cartRepository, Timestamp timestamp, OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
+    public OrderService(CartRepository cartRepository, Clock clock, OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
         this.cartRepository = cartRepository;
-        this.timestamp = timestamp;
+        this.clock = clock;
         this.orderRepository = orderRepository;
         this.orderLineRepository = orderLineRepository;
     }
@@ -31,7 +32,7 @@ public class OrderService {
                 .stream()
                 .map(cartLine -> orderLineRepository.save(new OrderLine(cartLine.getProductSku(), cartLine.getProductName(), cartLine.getQuantity())))
                 .collect(Collectors.toList()),
-                timestamp.getCurrentDate(),
+                clock.instant(),
                 cart.getRecipient(),
                 cart.getShippingAddress());
         order.setStatus(Order.Status.CREATED);
