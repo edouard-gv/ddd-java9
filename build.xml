@@ -545,7 +545,7 @@
   <path id="ddd-java9.module.bootclasspath">
     <!-- Paths to be included in compilation bootclasspath -->
   </path>
-
+  
   <path id="ddd-java9.module.production.classpath">
     <path refid="${module.jdk.classpath.ddd-java9}"/>
     <path refid="library.maven:_org.springframework.boot:spring-boot-starter-web:2.1.2.release.classpath"/>
@@ -788,12 +788,61 @@
     <patternset refid="excluded.from.module.ddd-java9"/>
   </patternset>
   
+  <path id="ddd-java9.module.sourcepath">
+    <dirset dir="${module.ddd-java9.basedir}">
+      <include name="src/main/java"/>
+    </dirset>
+  </path>
+  
+  <path id="ddd-java9.module.test.sourcepath">
+    <dirset dir="${module.ddd-java9.basedir}">
+      <include name="src/test/java"/>
+      <include name="src/test/resources"/>
+    </dirset>
+  </path>
+  
   
   <target name="compile.module.ddd-java9" depends="compile.module.ddd-java9.production,compile.module.ddd-java9.tests" description="Compile module ddd-java9"/>
   
-  <target name="compile.module.ddd-java9.production" depends="register.custom.compilers" description="Compile module ddd-java9; production classes"/>
+  <target name="compile.module.ddd-java9.production" depends="register.custom.compilers" description="Compile module ddd-java9; production classes">
+    <mkdir dir="${ddd-java9.output.dir}"/>
+    <javac2 destdir="${ddd-java9.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ddd-java9}/javac">
+      <compilerarg line="${compiler.args.ddd-java9}"/>
+      <bootclasspath refid="ddd-java9.module.bootclasspath"/>
+      <classpath refid="ddd-java9.module.production.classpath"/>
+      <src refid="ddd-java9.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.ddd-java9"/>
+    </javac2>
+    
+    <copy todir="${ddd-java9.output.dir}">
+      <fileset dir="${module.ddd-java9.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
   
-  <target name="compile.module.ddd-java9.tests" depends="register.custom.compilers,compile.module.ddd-java9.production" description="compile module ddd-java9; test classes" unless="skip.tests"/>
+  <target name="compile.module.ddd-java9.tests" depends="register.custom.compilers,compile.module.ddd-java9.production" description="compile module ddd-java9; test classes" unless="skip.tests">
+    <mkdir dir="${ddd-java9.testoutput.dir}"/>
+    <javac2 destdir="${ddd-java9.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ddd-java9}/javac">
+      <compilerarg line="${compiler.args.ddd-java9}"/>
+      <bootclasspath refid="ddd-java9.module.bootclasspath"/>
+      <classpath refid="ddd-java9.module.classpath"/>
+      <src refid="ddd-java9.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.ddd-java9"/>
+    </javac2>
+    
+    <copy todir="${ddd-java9.testoutput.dir}">
+      <fileset dir="${module.ddd-java9.basedir}/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.ddd-java9.basedir}/src/test/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
   
   <target name="clean.module.ddd-java9" description="cleanup module">
     <delete dir="${ddd-java9.output.dir}"/>
@@ -822,7 +871,7 @@
   <path id="modec-logistic.module.production.modulepath">
     <path refid="library.maven:_org.springframework:spring-context:5.1.4.release.classpath"/>
   </path>
-  
+
   <path id="modec-logistic.module.production.classpath">
     <path refid="${module.jdk.classpath.modec-logistic}"/>
     <path refid="library.maven:_org.springframework.boot:spring-boot-starter-web:2.1.2.release.classpath"/>
@@ -1097,10 +1146,6 @@
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
-      <fileset dir="${module.modec-logistic.basedir}/logistic/src/main/resources">
-        <patternset refid="compiler.resources"/>
-        <type type="file"/>
-      </fileset>
     </copy>
   </target>
   
@@ -1156,7 +1201,7 @@
     <path refid="library.maven:_org.springframework:spring-web:5.1.4.release.classpath"/>
     <pathelement location="${modec-logistic.output.dir}"/>
   </path>
-  
+
   <path id="modec-sales.module.production.classpath">
     <path refid="${module.jdk.classpath.modec-sales}"/>
     <path refid="library.maven:_org.springframework.boot:spring-boot-starter-data-jpa:2.1.2.release.classpath"/>
@@ -1495,7 +1540,6 @@
   <path id="modec-sales.module.sourcepath">
     <dirset dir="${module.modec-sales.basedir}/sales">
       <include name="src/main/java"/>
-      <include name="src/main/resources"/>
     </dirset>
   </path>
   
@@ -1522,10 +1566,6 @@
     
     <copy todir="${modec-sales.output.dir}">
       <fileset dir="${module.modec-sales.basedir}/sales/src/main/java">
-        <patternset refid="compiler.resources"/>
-        <type type="file"/>
-      </fileset>
-      <fileset dir="${module.modec-sales.basedir}/sales/src/main/resources">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>

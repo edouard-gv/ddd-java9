@@ -1,6 +1,7 @@
 package fr.arolla.modec.sales.service;
 
 import fr.arolla.modec.sales.entity.*;
+import fr.arolla.modec.sales.exception.CartNotFoundException;
 import fr.arolla.modec.sales.repository.CartLineRepository;
 import fr.arolla.modec.sales.repository.CartRepository;
 import fr.arolla.modec.sales.repository.ProductRepository;
@@ -29,24 +30,26 @@ public class CartService {
         Product product = productRepository.findOneBySku(sku);
         CartLine line = new CartLine(sku, product.getName(), quantity);
         cartLineRepository.save(line);
-        cartRepository.findById(cartId).get().getLines().add(line);
+        findOrFail(cartId).getLines().add(line);
     }
 
     public List<CartLine> getLines(CartId cartId) {
-        return cartRepository.findById(cartId).get().getLines();
+        return findOrFail(cartId).getLines();
     }
 
-    public void setShippingAddress(CartId cartId, String fullName, String line1, String city, String zipCode, String isoCountryCode) {
-        ShippingAddress address = new ShippingAddress(fullName, line1, city, zipCode, isoCountryCode);
-        cartRepository.findById(cartId).get().setShippingAddress(address);
+    public void setShippingAddress(CartId cartId, ShippingAddress shippingAddress) {
+        findOrFail(cartId).setShippingAddress(shippingAddress);
     }
 
-    public void setRecipient(CartId cartId, String fullName, String eMail) {
-        Customer customer = new Customer(fullName, eMail);
-        cartRepository.findById(cartId).get().setCustomer(customer);
+    public void setRecipient(CartId cartId, Customer customer) {
+        findOrFail(cartId).setCustomer(customer);
     }
 
     public List<ShippingService> getShippingServices(CartId cartId) {
         return logisticAccess.getShippingServices(cartId);
+    }
+
+    private Cart findOrFail(CartId cartId) {
+        return cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
     }
 }

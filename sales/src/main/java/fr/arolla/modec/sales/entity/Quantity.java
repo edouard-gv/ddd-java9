@@ -4,11 +4,7 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class Quantity {
-    long quantity;
-
-    public long getQuantity() {
-        return quantity;
-    }
+    private long quantity;
 
     public Quantity() { //for JPA
     }
@@ -16,6 +12,10 @@ public class Quantity {
     public Quantity(long quantity) {
         if (quantity < 0) throw new java.lang.IllegalArgumentException("Quantity must be positive: " + quantity);
         this.quantity = quantity;
+    }
+
+    public long getQuantity() {
+        return quantity;
     }
 
     @Override

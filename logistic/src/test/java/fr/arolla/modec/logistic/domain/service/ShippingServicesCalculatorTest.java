@@ -16,6 +16,9 @@ import java.util.ArrayList;
 @RunWith(MockitoJUnitRunner.class)
 public class ShippingServicesCalculatorTest {
 
+    private final String SKU_1 = "sku1";
+    private final String SKU_2 = "sku2";
+
     @Mock
     private ShippingServices shippingServices;
     @Mock
@@ -26,8 +29,8 @@ public class ShippingServicesCalculatorTest {
     public void setUp() throws Exception {
         Mockito.when(shippingServices.findOneByCode("Chrono10")).thenReturn(new ShippingService("Chrono10", "Chronopost", "level"));
         Mockito.when(shippingServices.findOneByCode("laposte")).thenReturn(new ShippingService("laposte", "La Poste", "level"));
-        Mockito.when(deliverables.findOneBySku(new Sku("sku1"))).thenReturn(new Deliverable(new Sku("sku"), "Heavy", new Weight(10)));
-        Mockito.when(deliverables.findOneBySku(new Sku("sku2"))).thenReturn(new Deliverable(new Sku("sku"), "Light", new Weight(0.5)));
+        Mockito.when(deliverables.findOneBySku(new Sku(SKU_1))).thenReturn(new Deliverable(new Sku(SKU_1), "Heavy", new Weight(10)));
+        Mockito.when(deliverables.findOneBySku(new Sku(SKU_2))).thenReturn(new Deliverable(new Sku(SKU_2), "Light", new Weight(0.5)));
         shippingServicesCalculator = new ShippingServicesCalculator(shippingServices, deliverables);
     }
 
@@ -40,7 +43,7 @@ public class ShippingServicesCalculatorTest {
     @Test
     public void FilledCartWithNoAddressShouldHaveNoShippingService() {
         Delivery delivery = new Delivery(new ArrayList<>(), null, null);
-        DeliveryLine line = new DeliveryLine(new Sku("sku1"), "name", new Quantity(1));
+        DeliveryLine line = new DeliveryLine(new Sku(SKU_1), "name", new Quantity(1));
         delivery.getLines().add(line);
         Assertions.assertThat(shippingServicesCalculator.calculate(delivery)).isEmpty();
     }
@@ -54,7 +57,7 @@ public class ShippingServicesCalculatorTest {
     @Test
     public void FilledCartWithShippingShouldHaveAShippingService() {
         Delivery delivery = new Delivery(new ArrayList<>(), null, new Address("fullname", "line1", "city", "zipCode", "isoCountryCode"));
-        DeliveryLine line = new DeliveryLine(new Sku("sku1"), "name", new Quantity(1));
+        DeliveryLine line = new DeliveryLine(new Sku(SKU_1), "name", new Quantity(1));
         delivery.getLines().add(line);
         Assertions.assertThat(shippingServicesCalculator.calculate(delivery).size()).isEqualTo(1);
         Assertions.assertThat(shippingServicesCalculator.calculate(delivery).get(0).getCarrier()).isEqualTo("Chronopost");
@@ -63,7 +66,7 @@ public class ShippingServicesCalculatorTest {
     @Test
     public void LightCartShouldHaveLaPosteShippingService() {
         Delivery delivery = new Delivery(new ArrayList<>(), null, new Address("fullname", "line1", "city", "zipCode", "isoCountryCode"));
-        DeliveryLine line = new DeliveryLine(new Sku("sku2"), "name", new Quantity(1));
+        DeliveryLine line = new DeliveryLine(new Sku(SKU_2), "name", new Quantity(1));
         delivery.getLines().add(line);
         Assertions.assertThat(shippingServicesCalculator.calculate(delivery).size()).isEqualTo(1);
         Assertions.assertThat(shippingServicesCalculator.calculate(delivery).get(0).getCarrier()).isEqualTo("La Poste");

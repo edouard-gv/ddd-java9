@@ -10,12 +10,12 @@ public class CartLine {
 
     @Embedded
     @Column(name = "productSku")
-    Sku productSku;
+    private Sku productSku;
 
-    String productName;
+    private String productName;
 
     @Embedded
-    Quantity quantity;
+    private Quantity quantity;
 
     public CartLine() { //for JPA
     }

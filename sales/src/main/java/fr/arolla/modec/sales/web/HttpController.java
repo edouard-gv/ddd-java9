@@ -1,4 +1,4 @@
-package fr.arolla.modec.sales;
+package fr.arolla.modec.sales.web;
 
 import fr.arolla.modec.sales.entity.Product;
 import fr.arolla.modec.sales.repository.ProductRepository;

@@ -9,11 +9,11 @@ public class OrderLine {
     private Long id;
 
     @Embedded
-    Sku productSku;
-    String productName;
+    private Sku productSku;
+    private String productName;
 
     @Embedded
-    Quantity quantity;
+    private Quantity quantity;
 
     public OrderLine() { //for JPA
     }

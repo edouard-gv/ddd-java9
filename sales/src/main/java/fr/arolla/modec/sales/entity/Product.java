@@ -16,6 +16,15 @@ public class Product {
 
     private String description;
 
+    public Product() { //for JPA
+    }
+
+    public Product(Sku sku, String name, String description) {
+        this.sku = sku;
+        this.name = name;
+        this.description = description;
+    }
+
     public Sku getSku() {
         return sku;
     }
@@ -26,14 +35,5 @@ public class Product {
 
     public String getDescription() {
         return description;
-    }
-
-    public Product() { //for JPA
-    }
-
-    public Product(Sku sku, String name, String description) {
-        this.sku = sku;
-        this.name = name;
-        this.description = description;
     }
 }

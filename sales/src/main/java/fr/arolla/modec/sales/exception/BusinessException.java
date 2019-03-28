@@ -1,4 +1,4 @@
-package fr.arolla.modec.sales;
+package fr.arolla.modec.sales.exception;
 
 public class BusinessException extends Exception {
     public BusinessException() {

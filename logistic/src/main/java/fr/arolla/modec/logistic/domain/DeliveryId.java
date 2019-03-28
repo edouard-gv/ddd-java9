@@ -7,12 +7,10 @@ public class DeliveryId implements Serializable {
     private Long id;
 
     public DeliveryId(Long id) {
-
         this.id = id;
     }
 
     public Long getId() {
-
         return id;
     }
 
