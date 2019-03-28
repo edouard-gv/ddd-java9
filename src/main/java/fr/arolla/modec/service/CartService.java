@@ -31,7 +31,7 @@ public class CartService {
         Product product = productRepository.findOneBySku(sku);
         CartLine line = new CartLine(sku, product.getName(), quantity);
         cartLineRepository.save(line);
-        cartRepository.findById(cartId).get().getLines().add(line);
+        cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId)).getLines().add(line);
     }
 
     public List<CartLine> getLines(CartId cartId) {
