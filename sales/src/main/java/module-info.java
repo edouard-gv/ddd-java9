@@ -6,5 +6,6 @@ module sales {
     requires spring.context;
     requires spring.data.commons;
     requires spring.web;
+    requires spring.tx;
     requires fr.arolla.modec.logistic;
 }

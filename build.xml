@@ -1199,6 +1199,7 @@
     <path refid="library.maven:_org.springframework.boot:spring-boot-autoconfigure:2.1.2.release.classpath"/>
     <path refid="library.maven:_org.springframework.data:spring-data-commons:2.1.4.release.classpath"/>
     <path refid="library.maven:_org.springframework:spring-web:5.1.4.release.classpath"/>
+    <path refid="library.maven:_org.springframework:spring-tx:5.1.4.release.classpath"/>
     <pathelement location="${modec-logistic.output.dir}"/>
   </path>
 

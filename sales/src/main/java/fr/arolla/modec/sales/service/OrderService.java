@@ -2,14 +2,19 @@ package fr.arolla.modec.sales.service;
 
 import fr.arolla.modec.sales.exception.BusinessException;
 import fr.arolla.modec.sales.entity.*;
+import fr.arolla.modec.sales.exception.CartNotFoundException;
+import fr.arolla.modec.sales.exception.OrderNotFoundException;
 import fr.arolla.modec.sales.repository.CartRepository;
 import fr.arolla.modec.sales.repository.OrderLineRepository;
 import fr.arolla.modec.sales.repository.OrderRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class OrderService {
 
     private final CartRepository cartRepository;
@@ -24,8 +29,9 @@ public class OrderService {
         this.orderLineRepository = orderLineRepository;
     }
 
+    @Transactional
     public OrderId createOrderFromCart(CartId cartId) throws BusinessException {
-        Cart cart = cartRepository.findById(cartId).get();
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
         checkCartForOrder(cart);
         Order order = new Order(cart.getLines()
                 .stream()
@@ -45,11 +51,13 @@ public class OrderService {
         }
     }
 
+    @Transactional
     public List<Order> getOrdersForEMail(String eMail) {
         return orderRepository.findByCustomerEmail(eMail);
     }
 
+    @Transactional
     public void orderIsPrepared(OrderId orderId) {
-        orderRepository.findById(orderId).get().setStatus(Order.Status.IN_PREPARATION);
+        orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException(orderId)).setStatus(Order.Status.IN_PREPARATION);
     }
 }
