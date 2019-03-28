@@ -18,6 +18,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class CartServiceTest {
 
+    private static final Sku SKU_1 = new Sku("sku1");
+    private static final Sku SKU_2 = new Sku("sku2");
+
     @Mock
     private CartRepository cartRepository;
     @Mock
@@ -34,8 +37,8 @@ public class CartServiceTest {
         Mockito.when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
         Mockito.when(shippingServiceRepository.findOneByCode("Chrono10")).thenReturn(new ShippingService("Chrono10", "Chronopost", "level"));
         Mockito.when(shippingServiceRepository.findOneByCode("laposte")).thenReturn(new ShippingService("laposte", "La Poste", "level"));
-        Mockito.when(productRepository.findOneBySku(new Sku("sku1"))).thenReturn(new Product(new Sku("sku"), "Heavy","A heavy product", new Weight(10)));
-        Mockito.when(productRepository.findOneBySku(new Sku("sku2"))).thenReturn(new Product(new Sku("sku"), "Light","A light product", new Weight(0.5)));
+        Mockito.when(productRepository.findOneBySku(SKU_1)).thenReturn(new Product(SKU_1, "Heavy","A heavy product", new Weight(10)));
+        Mockito.when(productRepository.findOneBySku(SKU_2)).thenReturn(new Product(SKU_2, "Light","A light product", new Weight(0.5)));
         cartService = new CartService(cartRepository, productRepository, null, shippingServiceRepository);
     }
 
@@ -46,7 +49,7 @@ public class CartServiceTest {
 
     @Test
     public void FilledCartWithNoAddressShouldHaveNoShippingService() {
-        CartLine line = new CartLine(new Sku("sku1"), "name", new Quantity(1));
+        CartLine line = new CartLine(SKU_1, "name", new Quantity(1));
         cart.getLines().add(line);
         assertThat(cartService.getShippingServices(cartId)).isEmpty();
     }
@@ -59,7 +62,7 @@ public class CartServiceTest {
 
     @Test
     public void FilledCartWithShippingShouldHaveAShippingService() {
-        CartLine line = new CartLine(new Sku("sku1"), "name", new Quantity(1));
+        CartLine line = new CartLine(SKU_1, "name", new Quantity(1));
         cart.getLines().add(line);
         cart.setShippingAddress(new ShippingAddress("fullName", "line1", "city", "zipCode", "isoCountryCode"));
         assertThat(cartService.getShippingServices(cartId).size()).isEqualTo(1);
@@ -68,7 +71,7 @@ public class CartServiceTest {
 
     @Test
     public void LightCartShouldHaveLaPosteShippingService() {
-        CartLine line = new CartLine(new Sku("sku2"), "name", new Quantity(1));
+        CartLine line = new CartLine(SKU_2, "name", new Quantity(1));
         cart.getLines().add(line);
         cart.setShippingAddress(new ShippingAddress("fullName", "line1", "city", "zipCode", "isoCountryCode"));
         assertThat(cartService.getShippingServices(cartId).size()).isEqualTo(1);
