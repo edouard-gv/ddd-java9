@@ -1,4 +1,4 @@
-package fr.arolla.modec.service;
+package fr.arolla.modec.exception;
 
 import fr.arolla.modec.entity.CartId;
 
