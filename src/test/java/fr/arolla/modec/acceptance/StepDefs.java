@@ -5,23 +5,31 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import fr.arolla.modec.BusinessException;
 import fr.arolla.modec.entity.*;
-import fr.arolla.modec.repository.*;
+import fr.arolla.modec.repository.CartLineRepository;
+import fr.arolla.modec.repository.CartRepository;
+import fr.arolla.modec.repository.OrderLineRepository;
+import fr.arolla.modec.repository.OrderRepository;
+import fr.arolla.modec.repository.ProductRepository;
+import fr.arolla.modec.repository.ShippingServiceRepository;
 import fr.arolla.modec.service.CartService;
 import fr.arolla.modec.service.DeliveryService;
 import fr.arolla.modec.service.OrderService;
 import fr.arolla.modec.service.ProductService;
-import fr.arolla.modec.service.system.Timestamp;
+import fr.arolla.modec.util.FixedButMutableClock;
 import io.cucumber.datatable.DataTable;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
+import java.time.Clock;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -32,7 +40,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
     private ProductRepository productRepository;
     private ProductService productService;
     private CartService cartService;
-    private Timestamp timestamp;
+    private FixedButMutableClock clock;
     private ShippingServiceRepository shippingServiceRepository;
     private OrderService orderService;
     private DeliveryService deliveryService;
@@ -40,13 +48,13 @@ public class StepDefs extends SpringBootBaseStepDefs {
     private OrderId currentOrderId;
     private DeliveryId currentDeliveryId;
 
-    public StepDefs(ProductRepository productRepository, Timestamp timestamp, ShippingServiceRepository shippingServiceRepository, CartRepository cartRepository, CartLineRepository cartLineRepository, OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
+    public StepDefs(ProductRepository productRepository, FixedButMutableClock clock, ShippingServiceRepository shippingServiceRepository, CartRepository cartRepository, CartLineRepository cartLineRepository, OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
         this.productRepository = productRepository;
         this.productService = new ProductService(productRepository);
         this.cartService = new CartService(cartRepository, productRepository, cartLineRepository, shippingServiceRepository);
-        this.timestamp = timestamp;
+        this.clock = clock;
         this.shippingServiceRepository = shippingServiceRepository;
-        this.orderService = new OrderService(cartRepository, timestamp, orderRepository, orderLineRepository);
+        this.orderService = new OrderService(cartRepository, clock, orderRepository, orderLineRepository);
         this.deliveryService = new DeliveryService(orderRepository);
     }
 
@@ -54,16 +62,15 @@ public class StepDefs extends SpringBootBaseStepDefs {
     static class TestContextConfiguration {
 
         @Bean
-        public Timestamp timestamp() {
-            return Mockito.mock(Timestamp.class);
+        public Clock clock() {
+            return new FixedButMutableClock(Instant.now(), ZoneId.systemDefault());
         }
     }
 
     @Given("^now is \"([^\"]*)\"$")
     public void nowIs(String stringDate) throws Throwable {
-        Calendar now = new GregorianCalendar();
-        now.setTime(Date.from(Instant.from(ZonedDateTime.parse(stringDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME))));
-        Mockito.when(timestamp.getCurrentDate()).thenReturn(now);
+        Instant instant = Instant.from(ZonedDateTime.parse(stringDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        clock.setInstant(instant);
     }
 
     @Given("^\"([^\"]*)\" as default locale$")
@@ -174,7 +181,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
 
         for (Order order : orderService.getOrdersForEMail(eMail)) {
             Map<String, String> orderMap = new HashMap<>();
-            orderMap.put("creation date", new SimpleDateFormat("YYYY-MM-dd").format(order.getCreationDate().getTime()));
+            orderMap.put("creation date", DateTimeFormatter.ofPattern("YYYY-MM-dd").withZone(ZoneId.systemDefault()).format(order.getCreationDate()));
             orderMap.put("status", order.getStatus().toString());
             actualList.add(orderMap);
         }
