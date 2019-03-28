@@ -2,6 +2,7 @@ package fr.arolla.modec.entity;
 
 import javax.persistence.*;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class Order {
 
     private Status status;
 
-    private Calendar creationDate;
+    private Date creationDate;
 
     @Embedded
     private ShippingAddress shippingAddress;
@@ -29,7 +30,7 @@ public class Order {
     public Order() { // for JPA
     }
 
-    public Order(List<OrderLine> lines, Calendar creationDate, Recipient recipient, ShippingAddress shippingAddress) {
+    public Order(List<OrderLine> lines, Date creationDate, Recipient recipient, ShippingAddress shippingAddress) {
         this.lines = lines;
         this.creationDate = creationDate;
         this.recipient = recipient;
@@ -56,7 +57,7 @@ public class Order {
         this.status = status;
     }
 
-    public Calendar getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
@@ -64,7 +65,7 @@ public class Order {
         CREATED, IN_PREPARATION;
 
         public String toString() {
-            return super.toString().toLowerCase().replaceAll("_", " ");
+            return name().toLowerCase().replaceAll("_", " ");
         }
     }
 }
