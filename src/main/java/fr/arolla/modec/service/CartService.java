@@ -31,21 +31,21 @@ public class CartService {
         Product product = productRepository.findOneBySku(sku);
         CartLine line = new CartLine(sku, product.getName(), quantity);
         cartLineRepository.save(line);
-        cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId)).getLines().add(line);
+        findOrFail(cartId).getLines().add(line);
     }
 
     public List<CartLine> getLines(CartId cartId) {
-        return cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId)).getLines();
+        return findOrFail(cartId).getLines();
     }
 
     public void setShippingAddress(CartId cartId, String fullName, String line1, String city, String zipCode, String isoCountryCode) {
         ShippingAddress address = new ShippingAddress(fullName, line1, city, zipCode, isoCountryCode);
-        cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId)).setShippingAddress(address);
+        findOrFail(cartId).setShippingAddress(address);
     }
 
     public List<ShippingService> getShippingServices(CartId cartId) {
         List<ShippingService> servicesFound = new ArrayList<>();
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
+        Cart cart = findOrFail(cartId);
         if (cart.getShippingAddress() != null && !cart.getLines().isEmpty()) {
             Sku firstProductSku = cart.getLines().get(0).getProductSku();
             Product firstProduct = productRepository.findOneBySku(firstProductSku);
@@ -61,6 +61,10 @@ public class CartService {
 
     public void setRecipient(CartId cartId, String fullName, String eMail) {
         Recipient recipient = new Recipient(fullName, eMail);
-        cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId)).setRecipient(recipient);
+        findOrFail(cartId).setRecipient(recipient);
+    }
+
+    private Cart findOrFail(CartId cartId) {
+        return cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
     }
 }
