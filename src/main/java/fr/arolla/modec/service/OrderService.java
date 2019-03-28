@@ -1,15 +1,19 @@
 package fr.arolla.modec.service;
 
-import fr.arolla.modec.BusinessException;
+import fr.arolla.modec.exception.BusinessException;
 import fr.arolla.modec.entity.*;
+import fr.arolla.modec.exception.CartNotFoundException;
 import fr.arolla.modec.repository.CartRepository;
 import fr.arolla.modec.repository.OrderLineRepository;
 import fr.arolla.modec.repository.OrderRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class OrderService {
 
     private final CartRepository cartRepository;
@@ -24,8 +28,9 @@ public class OrderService {
         this.orderLineRepository = orderLineRepository;
     }
 
+    @Transactional
     public OrderId createOrderFromCart(CartId cartId) throws BusinessException {
-        Cart cart = cartRepository.findById(cartId).get();
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
         checkCartForOrder(cart);
         Order order = new Order(cart.getLines()
                 .stream()
@@ -45,6 +50,7 @@ public class OrderService {
         }
     }
 
+    @Transactional
     public List<Order> getOrdersForEMail(String eMail) {
         return orderRepository.findByRecipientEmail(eMail);
     }

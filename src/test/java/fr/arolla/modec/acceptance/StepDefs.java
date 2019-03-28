@@ -3,12 +3,8 @@ package fr.arolla.modec.acceptance;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import fr.arolla.modec.BusinessException;
 import fr.arolla.modec.entity.*;
-import fr.arolla.modec.repository.CartLineRepository;
-import fr.arolla.modec.repository.CartRepository;
-import fr.arolla.modec.repository.OrderLineRepository;
-import fr.arolla.modec.repository.OrderRepository;
+import fr.arolla.modec.exception.BusinessException;
 import fr.arolla.modec.repository.ProductRepository;
 import fr.arolla.modec.repository.ShippingServiceRepository;
 import fr.arolla.modec.service.CartService;
@@ -48,14 +44,20 @@ public class StepDefs extends SpringBootBaseStepDefs {
     private OrderId currentOrderId;
     private DeliveryId currentDeliveryId;
 
-    public StepDefs(ProductRepository productRepository, FixedButMutableClock clock, ShippingServiceRepository shippingServiceRepository, CartRepository cartRepository, CartLineRepository cartLineRepository, OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
+    public StepDefs(ProductRepository productRepository,
+                    ProductService productService,
+                    FixedButMutableClock clock,
+                    ShippingServiceRepository shippingServiceRepository,
+                    CartService cartService,
+                    OrderService orderService,
+                    DeliveryService deliveryService) {
         this.productRepository = productRepository;
-        this.productService = new ProductService(productRepository);
-        this.cartService = new CartService(cartRepository, productRepository, cartLineRepository, shippingServiceRepository);
+        this.productService = productService;
+        this.cartService = cartService;
         this.clock = clock;
         this.shippingServiceRepository = shippingServiceRepository;
-        this.orderService = new OrderService(cartRepository, clock, orderRepository, orderLineRepository);
-        this.deliveryService = new DeliveryService(orderRepository);
+        this.orderService = orderService;
+        this.deliveryService = deliveryService;
     }
 
     @TestConfiguration
@@ -158,13 +160,11 @@ public class StepDefs extends SpringBootBaseStepDefs {
         this.currentCartId = cartService.createCart();
     }
 
-    @Transactional
     @Given("^product \"([^\"]*)\" is added to this cart$")
     public void productIsAddedToThisCart(String sku) throws Throwable {
         cartService.addToCart(this.currentCartId, new Sku(sku), new Quantity(1));
     }
 
-    @Transactional
     @Given("^\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" in \"([^\"]*)\" is set as the shipping address of this cart$")
     public void inIsSetAsTheShippingAddressOfThisCart(String fullName, String line1, String city, String zipCode, String isoCountryCode) throws Throwable {
         ShippingAddress shippingAddress = new ShippingAddress(fullName, line1, city, zipCode, isoCountryCode);
@@ -186,7 +186,6 @@ public class StepDefs extends SpringBootBaseStepDefs {
         assertThat(actualList).isEqualTo(cartLines.asMaps());
     }
 
-    @Transactional
     @Then("^the shipping services available for this cart should be:$")
     public void theShippingServicesAvailableForThisCartShouldBe(DataTable shippingServices) throws Throwable {
         List<Map<String, String>> actualList = new ArrayList<>();
@@ -200,26 +199,22 @@ public class StepDefs extends SpringBootBaseStepDefs {
         assertThat(actualList).isEqualTo(shippingServices.asMaps());
     }
 
-    @Transactional
     @And("^\"([^\"]*)\" with email address \"([^\"]*)\" is set as the recipient$")
     public void withEmailAdressIsSetAsTheRecipient(String fullName, String eMail) throws Throwable {
         Recipient recipient = new Recipient(fullName, eMail);
         cartService.setRecipient(currentCartId, recipient);
     }
 
-    @Transactional
     @And("^order is validated$")
     public void orderIsValidated() throws Throwable {
         currentOrderId = orderService.createOrderFromCart(this.currentCartId);
     }
 
-    @Transactional
     @And("^order should not be validated$")
     public void orderCannotBeValidated() throws Throwable {
         assertThatThrownBy(() -> orderService.createOrderFromCart(currentCartId)).isInstanceOf(BusinessException.class);
     }
 
-    @Transactional
     @Then("^the historical orders for recipient \"([^\"]*)\" should be:$")
     public void theHistoricalOrdersForRecipientShouldBe(String eMail, DataTable orders) throws Throwable {
         List<Map<String, String>> actualList = new ArrayList<>();
@@ -233,7 +228,6 @@ public class StepDefs extends SpringBootBaseStepDefs {
         assertThat(actualList).isEqualTo(orders.asMaps());
     }
 
-    @Transactional
     @And("^delivery is validated$")
     public void deliveryIsValidated() throws Throwable {
         currentDeliveryId = deliveryService.createDeliveryFromOrder(currentOrderId);
