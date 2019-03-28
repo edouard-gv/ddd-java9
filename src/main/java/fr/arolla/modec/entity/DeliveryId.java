@@ -11,12 +11,10 @@ public class DeliveryId {
     }
 
     public DeliveryId(Long id) {
-
         this.id = id;
     }
 
     public Long getId() {
-
         return id;
     }
 
@@ -30,7 +28,6 @@ public class DeliveryId {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
     }
 }

@@ -25,12 +25,11 @@ public class CartId implements Serializable {
         if (this == o) return true;
         if (!(o instanceof CartId)) return false;
         CartId cartId = (CartId) o;
-        return id == cartId.id;
+        return Objects.equals(id, cartId.id);
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
     }
 }

@@ -5,10 +5,6 @@ import cucumber.api.junit.Cucumber;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(
-        features = "src/test/java/fr/arolla/modec/acceptance"
-)
-
+@CucumberOptions()
 public class AcceptanceTest {
-
 }
