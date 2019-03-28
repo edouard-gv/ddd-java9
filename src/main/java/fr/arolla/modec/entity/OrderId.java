@@ -25,12 +25,11 @@ public class OrderId implements Serializable {
         if (this == o) return true;
         if (!(o instanceof OrderId)) return false;
         OrderId orderId = (OrderId) o;
-        return id == orderId.id;
+        return Objects.equals(id, orderId.id);
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
     }
 

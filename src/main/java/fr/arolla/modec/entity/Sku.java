@@ -20,17 +20,15 @@ public class Sku implements Comparable<Sku> {
 
     @Override
     public String toString() {
-        return "Sku{" +
-                "sku='" + sku + '\'' +
-                '}';
+        return "Sku{'" + sku + '\'' + '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Sku)) return false;
-        Sku sku1 = (Sku) o;
-        return Objects.equals(sku, sku1.sku);
+        Sku oSku = (Sku) o;
+        return Objects.equals(this.sku, oSku.sku);
     }
 
     @Override

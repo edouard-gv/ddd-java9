@@ -19,6 +19,16 @@ public class Product implements Comparable<Product> {
     @Embedded
     private Weight weight;
 
+    public Product() { //for JPA
+    }
+
+    public Product(Sku sku, String name, String description, Weight weight) {
+        this.sku = sku;
+        this.name = name;
+        this.description = description;
+        this.weight = weight;
+    }
+
     public Sku getSku() {
         return sku;
     }
@@ -33,16 +43,6 @@ public class Product implements Comparable<Product> {
 
     public Weight getWeight() {
         return weight;
-    }
-
-    public Product() { //for JPA
-    }
-
-    public Product(Sku sku, String name, String description, Weight weight) {
-        this.sku = sku;
-        this.name = name;
-        this.description = description;
-        this.weight = weight;
     }
 
     @Override
