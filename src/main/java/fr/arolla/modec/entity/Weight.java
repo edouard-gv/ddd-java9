@@ -19,8 +19,6 @@ public class Weight {
 
     @Override
     public String toString() {
-        return "Weight{" +
-                "weight=" + weight +
-                '}';
+        return "Weight{" + weight + '}';
     }
 }

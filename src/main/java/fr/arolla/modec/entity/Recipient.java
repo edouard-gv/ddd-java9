@@ -14,4 +14,12 @@ public class Recipient {
         this.recipientFullName = recipientFullName;
         this.email = email;
     }
+
+    public String getRecipientFullName() {
+        return recipientFullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }
