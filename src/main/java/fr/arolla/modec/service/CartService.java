@@ -35,17 +35,17 @@ public class CartService {
     }
 
     public List<CartLine> getLines(CartId cartId) {
-        return cartRepository.findById(cartId).get().getLines();
+        return cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId)).getLines();
     }
 
     public void setShippingAddress(CartId cartId, String fullName, String line1, String city, String zipCode, String isoCountryCode) {
         ShippingAddress address = new ShippingAddress(fullName, line1, city, zipCode, isoCountryCode);
-        cartRepository.findById(cartId).get().setShippingAddress(address);
+        cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId)).setShippingAddress(address);
     }
 
     public List<ShippingService> getShippingServices(CartId cartId) {
         List<ShippingService> servicesFound = new ArrayList<>();
-        Cart cart = cartRepository.findById(cartId).get();
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
         if (cart.getShippingAddress() != null && !cart.getLines().isEmpty()) {
             Sku firstProductSku = cart.getLines().get(0).getProductSku();
             Product firstProduct = productRepository.findOneBySku(firstProductSku);
@@ -61,6 +61,6 @@ public class CartService {
 
     public void setRecipient(CartId cartId, String fullName, String eMail) {
         Recipient recipient = new Recipient(fullName, eMail);
-        cartRepository.findById(cartId).get().setRecipient(recipient);
+        cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId)).setRecipient(recipient);
     }
 }
