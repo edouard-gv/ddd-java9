@@ -13,15 +13,15 @@ public class ShippingAddress implements Serializable {
     private String zipCode;
     private String isoCountryCode;
 
+    public ShippingAddress() {//for JPA
+    }
+
     public ShippingAddress(String fullName, String line1, String city, String zipCode, String isoCountryCode) {
         this.fullName = fullName;
         this.line1 = line1;
         this.city = city;
         this.zipCode = zipCode;
         this.isoCountryCode = isoCountryCode;
-    }
-
-    public ShippingAddress() {//for JPA
     }
 
     public String getFullName() {
@@ -58,7 +58,6 @@ public class ShippingAddress implements Serializable {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(fullName, line1, city, zipCode, isoCountryCode);
     }
 }
