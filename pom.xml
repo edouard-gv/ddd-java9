@@ -6,7 +6,12 @@
 
     <groupId>fr.arolla</groupId>
     <artifactId>ddd-java9</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>logistic</module>
+        <module>sales</module>
+    </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
