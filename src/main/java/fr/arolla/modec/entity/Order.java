@@ -24,15 +24,15 @@ public class Order {
     private ShippingAddress shippingAddress;
 
     @Embedded
-    private Recipient recipient;
+    private Customer customer;
 
     public Order() { // for JPA
     }
 
-    public Order(List<OrderLine> lines, Calendar creationDate, Recipient recipient, ShippingAddress shippingAddress) {
+    public Order(List<OrderLine> lines, Calendar creationDate, Customer customer, ShippingAddress shippingAddress) {
         this.lines = lines;
         this.creationDate = creationDate;
-        this.recipient = recipient;
+        this.customer = customer;
         this.shippingAddress = shippingAddress;
     }
 

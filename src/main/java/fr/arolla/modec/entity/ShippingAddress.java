@@ -7,14 +7,14 @@ import java.util.Objects;
 @Embeddable
 public class ShippingAddress implements Serializable {
 
-    private String fullName;
+    private String recipientName;
     private String line1;
     private String city;
     private String zipCode;
     private String isoCountryCode;
 
-    public ShippingAddress(String fullName, String line1, String city, String zipCode, String isoCountryCode) {
-        this.fullName = fullName;
+    public ShippingAddress(String recipientName, String line1, String city, String zipCode, String isoCountryCode) {
+        this.recipientName = recipientName;
         this.line1 = line1;
         this.city = city;
         this.zipCode = zipCode;
@@ -24,8 +24,8 @@ public class ShippingAddress implements Serializable {
     public ShippingAddress() {//for JPA
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getRecipientName() {
+        return recipientName;
     }
 
     public String getLine1() {
@@ -49,7 +49,7 @@ public class ShippingAddress implements Serializable {
         if (this == o) return true;
         if (!(o instanceof ShippingAddress)) return false;
         ShippingAddress that = (ShippingAddress) o;
-        return Objects.equals(fullName, that.fullName) &&
+        return Objects.equals(recipientName, that.recipientName) &&
                 Objects.equals(line1, that.line1) &&
                 Objects.equals(city, that.city) &&
                 Objects.equals(zipCode, that.zipCode) &&
@@ -59,6 +59,6 @@ public class ShippingAddress implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(fullName, line1, city, zipCode, isoCountryCode);
+        return Objects.hash(recipientName, line1, city, zipCode, isoCountryCode);
     }
 }

@@ -60,7 +60,7 @@ public class CartService {
     }
 
     public void setRecipient(CartId cartId, String fullName, String eMail) {
-        Recipient recipient = new Recipient(fullName, eMail);
-        cartRepository.findById(cartId).get().setRecipient(recipient);
+        Customer customer = new Customer(fullName, eMail);
+        cartRepository.findById(cartId).get().setCustomer(customer);
     }
 }

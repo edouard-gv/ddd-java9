@@ -19,7 +19,7 @@ public class Cart {
     private ShippingAddress shippingAddress;
 
     @Embedded
-    private Recipient recipient;
+    private Customer customer;
 
     public Cart() {
         lines = new ArrayList<>();
@@ -37,15 +37,15 @@ public class Cart {
         return shippingAddress;
     }
 
-    public Recipient getRecipient() {
-        return recipient;
+    public Customer getCustomer() {
+        return customer;
     }
 
     public void setShippingAddress(ShippingAddress shippingAddress) {
         this.shippingAddress = shippingAddress;
     }
 
-    public void setRecipient(Recipient recipient) {
-        this.recipient = recipient;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

@@ -32,7 +32,7 @@ public class OrderService {
                 .map(cartLine -> orderLineRepository.save(new OrderLine(cartLine.getProductSku(), cartLine.getProductName(), cartLine.getQuantity())))
                 .collect(Collectors.toList()),
                 timestamp.getCurrentDate(),
-                cart.getRecipient(),
+                cart.getCustomer(),
                 cart.getShippingAddress());
         order.setStatus(Order.Status.CREATED);
         order = orderRepository.save(order);
@@ -40,12 +40,12 @@ public class OrderService {
     }
 
     private void checkCartForOrder(Cart cart) throws BusinessException {
-        if (cart.getRecipient() == null) {
-            throw new BusinessException("Recipient of order cannot be null");
+        if (cart.getCustomer() == null) {
+            throw new BusinessException("Customer of order cannot be null");
         }
     }
 
     public List<Order> getOrdersForEMail(String eMail) {
-        return orderRepository.findByRecipientEmail(eMail);
+        return orderRepository.findByCustomerEmail(eMail);
     }
 }

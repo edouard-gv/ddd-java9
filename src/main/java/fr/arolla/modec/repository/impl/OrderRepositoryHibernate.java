@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface OrderRepositoryHibernate extends OrderRepository, CrudRepository<Order, OrderId> {
-    List<Order> findByRecipientEmail(String eMail);
+    List<Order> findByCustomerEmail(String email);
 }
