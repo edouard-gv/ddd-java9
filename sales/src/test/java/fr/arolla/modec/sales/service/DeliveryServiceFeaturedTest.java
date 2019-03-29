@@ -9,6 +9,6 @@ import org.junit.runner.RunWith;
         features = "src/test/java/fr/arolla/modec/sales/service"
 )
 
-public class CartServiceFeaturedTest {
+public class DeliveryServiceFeaturedTest {
 
 }

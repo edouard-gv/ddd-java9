@@ -16,7 +16,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CartServiceTest {
+public class DeliveryServiceTest {
 
     @Mock
     private CartRepository cartRepository;
@@ -34,9 +34,9 @@ public class CartServiceTest {
         Mockito.when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
         Mockito.when(shippingServiceRepository.findOneByCode("Chrono10")).thenReturn(new ShippingService("Chrono10", "Chronopost", "level"));
         Mockito.when(shippingServiceRepository.findOneByCode("laposte")).thenReturn(new ShippingService("laposte", "La Poste", "level"));
-        Mockito.when(productRepository.findOneBySku(new Sku("sku1"))).thenReturn(new Product(new Sku("sku"), "Heavy","A heavy product", new Weight(10)));
-        Mockito.when(productRepository.findOneBySku(new Sku("sku2"))).thenReturn(new Product(new Sku("sku"), "Light","A light product", new Weight(0.5)));
-        cartService = new CartService(cartRepository, productRepository, null, shippingServiceRepository);
+        Mockito.when(productRepository.findOneBySku(new Sku("sku1"))).thenReturn(new Product(new Sku("sku"), "Heavy", "A heavy product", new Weight(10)));
+        Mockito.when(productRepository.findOneBySku(new Sku("sku2"))).thenReturn(new Product(new Sku("sku"), "Light", "A light product", new Weight(0.5)));
+        cartService = new CartService(cartRepository, productRepository, null, new DeliveryService(shippingServiceRepository, productRepository));
     }
 
     @Test

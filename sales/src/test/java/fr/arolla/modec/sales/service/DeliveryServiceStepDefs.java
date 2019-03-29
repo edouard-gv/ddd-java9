@@ -17,7 +17,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CartServiceStepDefs {
+public class DeliveryServiceStepDefs {
 
     @Mock
     private CartRepository cartRepository;
@@ -32,7 +32,7 @@ public class CartServiceStepDefs {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        cartService = new CartService(cartRepository, productRepository, null, shippingServiceRepository);
+        cartService = new CartService(cartRepository, productRepository, null, new DeliveryService(shippingServiceRepository, productRepository));
     }
 
     @Given("^the following mocked shipping services:$")
@@ -48,7 +48,7 @@ public class CartServiceStepDefs {
         List<Map<String, String>> lines = products.asMaps();
         for (Map<String, String> line : lines) {
             Mockito.when(productRepository.findOneBySku(new Sku(line.get("sku")))).thenReturn(
-                    new Product(new Sku(line.get("sku")), line.get("name"),line.get("description"), new Weight(Double.parseDouble(line.get("weight")))));
+                    new Product(new Sku(line.get("sku")), line.get("name"), line.get("description"), new Weight(Double.parseDouble(line.get("weight")))));
         }
     }
 

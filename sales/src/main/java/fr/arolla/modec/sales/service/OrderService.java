@@ -48,4 +48,8 @@ public class OrderService {
     public List<Order> getOrdersForEMail(String eMail) {
         return orderRepository.findByCustomerEmail(eMail);
     }
+
+    public void orderIsPrepared(OrderId orderId) {
+        orderRepository.findById(orderId).get().setStatus(Order.Status.IN_PREPARATION);
+    }
 }

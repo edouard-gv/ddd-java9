@@ -35,7 +35,6 @@ public class StepDefs extends SpringBootBaseStepDefs {
     private Timestamp timestamp;
     private ShippingServiceRepository shippingServiceRepository;
     private OrderService orderService;
-    private DeliveryService deliveryService;
     private CartId currentCartId;
     private OrderId currentOrderId;
     private DeliveryId currentDeliveryId;
@@ -43,11 +42,11 @@ public class StepDefs extends SpringBootBaseStepDefs {
     public StepDefs(ProductRepository productRepository, Timestamp timestamp, ShippingServiceRepository shippingServiceRepository, CartRepository cartRepository, CartLineRepository cartLineRepository, OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
         this.productRepository = productRepository;
         this.productService = new ProductService(productRepository);
-        this.cartService = new CartService(cartRepository, productRepository, cartLineRepository, shippingServiceRepository);
+        DeliveryService deliveryService = new DeliveryService(shippingServiceRepository, productRepository);
+        this.cartService = new CartService(cartRepository, productRepository, cartLineRepository, deliveryService);
         this.timestamp = timestamp;
         this.shippingServiceRepository = shippingServiceRepository;
         this.orderService = new OrderService(cartRepository, timestamp, orderRepository, orderLineRepository);
-        this.deliveryService = new DeliveryService(orderRepository);
     }
 
     @TestConfiguration
@@ -184,6 +183,6 @@ public class StepDefs extends SpringBootBaseStepDefs {
     @Transactional
     @And("^delivery is validated$")
     public void deliveryIsValidated() throws Throwable {
-        currentDeliveryId = deliveryService.createDeliveryFromOrder(currentOrderId);
+        orderService.orderIsPrepared(currentOrderId);
     }
 }

@@ -4,23 +4,23 @@ import fr.arolla.modec.sales.entity.*;
 import fr.arolla.modec.sales.repository.CartLineRepository;
 import fr.arolla.modec.sales.repository.CartRepository;
 import fr.arolla.modec.sales.repository.ProductRepository;
-import fr.arolla.modec.sales.repository.ShippingServiceRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CartService {
 
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final CartLineRepository cartLineRepository;
-    private final ShippingServiceRepository shippingServiceRepository;
+    private final DeliveryService deliveryService;
 
-    public CartService(CartRepository cartRepository, ProductRepository productRepository, CartLineRepository cartLineRepository, ShippingServiceRepository shippingServiceRepository) {
+    public CartService(CartRepository cartRepository, ProductRepository productRepository, CartLineRepository cartLineRepository, DeliveryService deliveryService) {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.cartLineRepository = cartLineRepository;
-        this.shippingServiceRepository = shippingServiceRepository;
+        this.deliveryService = deliveryService;
     }
 
     public CartId createCart() {
@@ -46,17 +46,18 @@ public class CartService {
     public List<ShippingService> getShippingServices(CartId cartId) {
         List<ShippingService> servicesFound = new ArrayList<>();
         Cart cart = cartRepository.findById(cartId).get();
-        if (cart.getShippingAddress() != null && !cart.getLines().isEmpty()) {
-            Sku firstProductSku = cart.getLines().get(0).getProductSku();
-            Product firstProduct = productRepository.findOneBySku(firstProductSku);
-            if (firstProduct.getWeight().getWeight() >= 1) {
-                servicesFound.add(shippingServiceRepository.findOneByCode("Chrono10"));
-            }
-            else {
-                servicesFound.add(shippingServiceRepository.findOneByCode("laposte"));
-            }
-        }
-        return servicesFound;
+        Order order = buildOrderFromCart(cart);
+        return deliveryService.getShippingServices(order);
+    }
+
+    private Order buildOrderFromCart(Cart cart) {
+        return new Order(cart.getLines()
+                .stream()
+                .map(cartLine -> new OrderLine(cartLine.getProductSku(), cartLine.getProductName(), cartLine.getQuantity()))
+                .collect(Collectors.toList()),
+                null,
+                null,
+                cart.getShippingAddress());
     }
 
     public void setRecipient(CartId cartId, String fullName, String eMail) {
