@@ -1,9 +1,9 @@
-package fr.arolla.modec.sales.entity;
+package fr.arolla.modec.logistic.entity;
 
 import javax.persistence.*;
 
 @Entity
-public class Product {
+public class Deliverable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -14,7 +14,8 @@ public class Product {
 
     private String name;
 
-    private String description;
+    @Embedded
+    private Weight weight;
 
     public Sku getSku() {
         return sku;
@@ -24,16 +25,16 @@ public class Product {
         return name;
     }
 
-    public String getDescription() {
-        return description;
+    public Weight getWeight() {
+        return weight;
     }
 
-    public Product() { //for JPA
+    public Deliverable() { //for JPA
     }
 
-    public Product(Sku sku, String name, String description) {
+    public Deliverable(Sku sku, String name, Weight weight) {
         this.sku = sku;
         this.name = name;
-        this.description = description;
+        this.weight = weight;
     }
 }

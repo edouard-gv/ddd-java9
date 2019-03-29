@@ -1,4 +1,4 @@
-package fr.arolla.modec.sales.entity;
+package fr.arolla.modec.logistic.entity;
 
 import javax.persistence.*;
 

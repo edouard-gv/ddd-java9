@@ -1,4 +1,4 @@
-package fr.arolla.modec.sales;
+package fr.arolla.modec;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

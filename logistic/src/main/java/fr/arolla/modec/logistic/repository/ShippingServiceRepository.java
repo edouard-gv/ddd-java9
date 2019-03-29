@@ -1,6 +1,6 @@
-package fr.arolla.modec.sales.repository;
+package fr.arolla.modec.logistic.repository;
 
-import fr.arolla.modec.sales.entity.ShippingService;
+import fr.arolla.modec.logistic.entity.ShippingService;
 
 public interface ShippingServiceRepository {
     ShippingService findOneByCode(String code);

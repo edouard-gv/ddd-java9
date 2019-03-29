@@ -1,4 +1,4 @@
-package fr.arolla.modec.sales.acceptance;
+package fr.arolla.modec.acceptance;
 
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

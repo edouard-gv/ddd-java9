@@ -14,4 +14,12 @@ public class Customer {
         this.fullName = fullName;
         this.email = email;
     }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }

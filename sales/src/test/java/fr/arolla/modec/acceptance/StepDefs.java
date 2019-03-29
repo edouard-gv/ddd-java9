@@ -1,13 +1,19 @@
-package fr.arolla.modec.sales.acceptance;
+package fr.arolla.modec.acceptance;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import fr.arolla.modec.logistic.entity.Deliverable;
+import fr.arolla.modec.logistic.entity.DeliveryId;
+import fr.arolla.modec.logistic.entity.ShippingService;
+import fr.arolla.modec.logistic.entity.Weight;
+import fr.arolla.modec.logistic.repository.DeliverableRepository;
+import fr.arolla.modec.logistic.repository.ShippingServiceRepository;
+import fr.arolla.modec.logistic.service.DeliveryService;
 import fr.arolla.modec.sales.BusinessException;
 import fr.arolla.modec.sales.entity.*;
 import fr.arolla.modec.sales.repository.*;
 import fr.arolla.modec.sales.service.CartService;
-import fr.arolla.modec.sales.service.DeliveryService;
 import fr.arolla.modec.sales.service.OrderService;
 import fr.arolla.modec.sales.service.ProductService;
 import fr.arolla.modec.sales.service.system.Timestamp;
@@ -37,12 +43,14 @@ public class StepDefs extends SpringBootBaseStepDefs {
     private OrderService orderService;
     private CartId currentCartId;
     private OrderId currentOrderId;
+    private DeliverableRepository deliverableRepository;
     private DeliveryId currentDeliveryId;
 
-    public StepDefs(ProductRepository productRepository, Timestamp timestamp, ShippingServiceRepository shippingServiceRepository, CartRepository cartRepository, CartLineRepository cartLineRepository, OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
+    public StepDefs(ProductRepository productRepository, DeliverableRepository deliverableRepository, Timestamp timestamp, ShippingServiceRepository shippingServiceRepository, CartRepository cartRepository, CartLineRepository cartLineRepository, OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
         this.productRepository = productRepository;
+        this.deliverableRepository = deliverableRepository;
         this.productService = new ProductService(productRepository);
-        DeliveryService deliveryService = new DeliveryService(shippingServiceRepository, productRepository);
+        DeliveryService deliveryService = new DeliveryService(shippingServiceRepository, deliverableRepository);
         this.cartService = new CartService(cartRepository, productRepository, cartLineRepository, deliveryService);
         this.timestamp = timestamp;
         this.shippingServiceRepository = shippingServiceRepository;
@@ -73,9 +81,15 @@ public class StepDefs extends SpringBootBaseStepDefs {
     @Given("^the following catalog:$")
     public void theFollowingCatalog(DataTable products) throws Throwable {
         productRepository.deleteAll();
+        deliverableRepository.deleteAll();
         List<Map<String, String>> lines = products.asMaps();
         for (Map<String, String> line : lines) {
-            productRepository.save(new Product(new Sku(line.get("SKU")), line.get("name"), line.get("description"), new Weight(Float.parseFloat(line.get("weight")))));
+            productRepository.save(new Product(new Sku(line.get("SKU")), line.get("name"), line.get("description")));
+            deliverableRepository.save(new Deliverable(
+                    new fr.arolla.modec.logistic.entity.Sku(line.get("SKU")),
+                    line.get("name"),
+                    new Weight(Float.parseFloat(line.get("weight")))
+            ));
         }
     }
 

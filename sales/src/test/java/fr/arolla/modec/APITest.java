@@ -1,8 +1,7 @@
-package fr.arolla.modec.sales;
+package fr.arolla.modec;
 
 import fr.arolla.modec.sales.entity.Product;
 import fr.arolla.modec.sales.entity.Sku;
-import fr.arolla.modec.sales.entity.Weight;
 import fr.arolla.modec.sales.repository.ProductRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +31,7 @@ public class APITest {
 
     @Test
     public void productList() throws Exception {
-        productRepository.save(new Product(new Sku("sku1"), "bike", "A bike for everyone!", new Weight(10)));
+        productRepository.save(new Product(new Sku("sku1"), "bike", "A bike for everyone!"));
 
         TestRestTemplate testRestTemplate = new TestRestTemplate();
         ResponseEntity<String> response = testRestTemplate.

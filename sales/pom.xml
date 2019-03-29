@@ -10,6 +10,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>modec-sales</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>fr.arolla</groupId>
+            <artifactId>modec-logistic</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 
 </project>

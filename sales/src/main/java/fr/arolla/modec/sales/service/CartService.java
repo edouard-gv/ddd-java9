@@ -1,5 +1,9 @@
 package fr.arolla.modec.sales.service;
 
+import fr.arolla.modec.logistic.entity.*;
+import fr.arolla.modec.logistic.service.DeliveryService;
+import fr.arolla.modec.sales.entity.Quantity;
+import fr.arolla.modec.sales.entity.Sku;
 import fr.arolla.modec.sales.entity.*;
 import fr.arolla.modec.sales.repository.CartLineRepository;
 import fr.arolla.modec.sales.repository.CartRepository;
@@ -46,18 +50,26 @@ public class CartService {
     public List<ShippingService> getShippingServices(CartId cartId) {
         List<ShippingService> servicesFound = new ArrayList<>();
         Cart cart = cartRepository.findById(cartId).get();
-        Order order = buildOrderFromCart(cart);
-        return deliveryService.getShippingServices(order);
+        Delivery delivery = buildDeliveryFromCart(cart);
+        return deliveryService.getShippingServices(delivery);
     }
 
-    private Order buildOrderFromCart(Cart cart) {
-        return new Order(cart.getLines()
+    private Delivery buildDeliveryFromCart(Cart cart) {
+        return new Delivery(cart.getLines()
                 .stream()
-                .map(cartLine -> new OrderLine(cartLine.getProductSku(), cartLine.getProductName(), cartLine.getQuantity()))
+                .map(cartLine -> new DeliveryLine(
+                        new fr.arolla.modec.logistic.entity.Sku(cartLine.getProductSku().getSku()),
+                        cartLine.getProductName(),
+                        new fr.arolla.modec.logistic.entity.Quantity(cartLine.getQuantity().getQuantity())))
                 .collect(Collectors.toList()),
-                null,
-                null,
-                cart.getShippingAddress());
+                cart.getCustomer() != null ? new Contact(cart.getCustomer().getEmail()) : null,
+                cart.getShippingAddress() != null ? new Address(
+                        cart.getShippingAddress().getRecipientName(),
+                        cart.getShippingAddress().getLine1(),
+                        cart.getShippingAddress().getCity(),
+                        cart.getShippingAddress().getZipCode(),
+                        cart.getShippingAddress().getIsoCountryCode()
+                        ) : null);
     }
 
     public void setRecipient(CartId cartId, String fullName, String eMail) {

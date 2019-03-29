@@ -1,10 +1,11 @@
-package fr.arolla.modec.sales.entity;
+package fr.arolla.modec.logistic.entity;
 
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class DeliveryId {
+public class DeliveryId implements Serializable {
     private Long id;
 
     public DeliveryId() { //for JPA
@@ -30,7 +31,6 @@ public class DeliveryId {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
     }
 }
