@@ -3,14 +3,10 @@ package fr.arolla.modec.acceptance;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import fr.arolla.modec.logistic.domain.Deliverable;
-import fr.arolla.modec.logistic.domain.DeliveryId;
-import fr.arolla.modec.logistic.domain.ShippingService;
-import fr.arolla.modec.logistic.domain.Weight;
-import fr.arolla.modec.logistic.domain.Deliverables;
-import fr.arolla.modec.logistic.domain.ShippingServices;
-import fr.arolla.modec.logistic.domain.service.ShippingServicesCalculator;
+import fr.arolla.modec.logistic.domain.*;
 import fr.arolla.modec.sales.BusinessException;
+import fr.arolla.modec.sales.entity.Quantity;
+import fr.arolla.modec.sales.entity.Sku;
 import fr.arolla.modec.sales.entity.*;
 import fr.arolla.modec.sales.repository.*;
 import fr.arolla.modec.sales.service.CartService;
@@ -41,16 +37,17 @@ public class StepDefs extends SpringBootBaseStepDefs {
     private Timestamp timestamp;
     private ShippingServices shippingServices;
     private OrderService orderService;
+    private ICalculateShippingServices shippingServicesCalculator;
     private CartId currentCartId;
     private OrderId currentOrderId;
     private Deliverables deliverables;
     private DeliveryId currentDeliveryId;
 
-    public StepDefs(ProductRepository productRepository, Deliverables deliverables, Timestamp timestamp, ShippingServices shippingServices, CartRepository cartRepository, CartLineRepository cartLineRepository, OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
+    public StepDefs(ProductRepository productRepository, Deliverables deliverables, Timestamp timestamp, ShippingServices shippingServices, CartRepository cartRepository, CartLineRepository cartLineRepository, OrderRepository orderRepository, OrderLineRepository orderLineRepository, ICalculateShippingServices shippingServicesCalculator) {
         this.productRepository = productRepository;
         this.deliverables = deliverables;
         this.productService = new ProductService(productRepository);
-        ShippingServicesCalculator shippingServicesCalculator = new ShippingServicesCalculator(shippingServices, deliverables);
+        this.shippingServicesCalculator = shippingServicesCalculator;
         this.cartService = new CartService(cartRepository, productRepository, cartLineRepository, shippingServicesCalculator);
         this.timestamp = timestamp;
         this.shippingServices = shippingServices;

@@ -1,7 +1,6 @@
 package fr.arolla.modec.sales.service;
 
 import fr.arolla.modec.logistic.domain.*;
-import fr.arolla.modec.logistic.domain.service.ShippingServicesCalculator;
 import fr.arolla.modec.sales.entity.Quantity;
 import fr.arolla.modec.sales.entity.Sku;
 import fr.arolla.modec.sales.entity.*;
@@ -18,9 +17,9 @@ public class CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final CartLineRepository cartLineRepository;
-    private final ShippingServicesCalculator shippingServicesCalculator;
+    private final ICalculateShippingServices shippingServicesCalculator;
 
-    public CartService(CartRepository cartRepository, ProductRepository productRepository, CartLineRepository cartLineRepository, ShippingServicesCalculator shippingServicesCalculator) {
+    public CartService(CartRepository cartRepository, ProductRepository productRepository, CartLineRepository cartLineRepository, ICalculateShippingServices shippingServicesCalculator) {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.cartLineRepository = cartLineRepository;
