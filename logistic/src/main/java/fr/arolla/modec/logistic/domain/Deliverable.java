@@ -1,20 +1,12 @@
 package fr.arolla.modec.logistic.domain;
 
-import javax.persistence.*;
-
-@Entity
 public class Deliverable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Embedded
-    @Column(unique = true, nullable = false)
     private Sku sku;
 
     private String name;
 
-    @Embedded
     private Weight weight;
 
     public Sku getSku() {
@@ -27,9 +19,6 @@ public class Deliverable {
 
     public Weight getWeight() {
         return weight;
-    }
-
-    public Deliverable() { //for JPA
     }
 
     public Deliverable(Sku sku, String name, Weight weight) {

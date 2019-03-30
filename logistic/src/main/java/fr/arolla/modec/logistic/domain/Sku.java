@@ -1,14 +1,9 @@
 package fr.arolla.modec.logistic.domain;
 
-import javax.persistence.Embeddable;
 import java.util.Objects;
 
-@Embeddable
 public class Sku {
     private String sku;
-
-    public Sku() { //for JPA
-    }
 
     public Sku(String sku) {
         this.sku = sku;

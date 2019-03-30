@@ -1,15 +1,10 @@
 package fr.arolla.modec.logistic.domain;
 
-import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Embeddable
 public class DeliveryId implements Serializable {
     private Long id;
-
-    public DeliveryId() { //for JPA
-    }
 
     public DeliveryId(Long id) {
 

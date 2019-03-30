@@ -1,10 +1,7 @@
 package fr.arolla.modec.logistic.domain;
 
-import javax.persistence.Embeddable;
-
-@Embeddable
 public class Quantity {
-    long quantity;
+    private long quantity;
 
     public long getQuantity() {
         return quantity;

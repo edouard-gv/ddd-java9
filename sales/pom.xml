@@ -12,6 +12,16 @@
     <artifactId>modec-sales</artifactId>
     <dependencies>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>fr.arolla</groupId>
             <artifactId>modec-logistic</artifactId>
             <version>1.0-SNAPSHOT</version>

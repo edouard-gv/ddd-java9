@@ -1,10 +1,8 @@
 package fr.arolla.modec.logistic.domain;
 
-import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Embeddable
 public class Address implements Serializable {
 
     private String recipientName;
@@ -19,9 +17,6 @@ public class Address implements Serializable {
         this.city = city;
         this.zipCode = zipCode;
         this.isoCountryCode = isoCountryCode;
-    }
-
-    public Address() {//for JPA
     }
 
     public String getRecipientName() {
