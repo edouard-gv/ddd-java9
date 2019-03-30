@@ -8,6 +8,6 @@ Ce n'est pas une gestion des dépendances au sens de version : maven reste néce
 
 ---
 [Précédent : Module et organisation équipe](./rappel-organisation-modulaire.md)
-<| [Retour](.) 
+<| [Retour](https://github.com/edouard-gv/ddd-java9) 
 |> [Suite : Une application à l'ancienne](./debut.md)
  

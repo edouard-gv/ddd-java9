@@ -21,5 +21,5 @@ Mais c'est déjà un peu plus :
   
 ---
 [Précédent : les modules Java9 (Jigsaw)](./rappel-module-java9.md)
-<| [Retour](.) 
+<| [Retour](https://github.com/edouard-gv/ddd-java9) 
 |> [Suite : Deux modules pour deux hexagones](./maintenant.md)

@@ -7,8 +7,7 @@
 * Les adapteurs implémentent ces contrats et seront injectés.
 
 ---
-[Précédent : architecture hexagonale](./rappel-architecture-hexagonale.md)
-<| [Retour](.) 
+[Retour](https://github.com/edouard-gv/ddd-java9) 
 |> [Suite : DDD](./rappel-ddd.md)
  
  

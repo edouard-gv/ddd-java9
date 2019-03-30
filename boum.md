@@ -12,5 +12,5 @@ En tous cas, on comprend vite qu'une règle fondamentale, mais très contraignan
 
 ---
 [Précédent : Deux modules pour deux hexagones](./maintenant.md)
-<| [Retour](.) 
+<| [Retour](https://github.com/edouard-gv/ddd-java9) 
 |> [Suite : Pour aller plus loin](./suite.md)

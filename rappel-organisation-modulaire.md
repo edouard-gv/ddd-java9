@@ -11,6 +11,6 @@ Aussi, liens externe et interne qu'il y a dans certaines équipes peut ressemble
   
 ---
 [Précédent : DDD](./rappel-ddd.md)
-<| [Retour](.) 
+<| [Retour](https://github.com/edouard-gv/ddd-java9) 
 |> [Suite : les modules Java9 (Jigsaw)](./rappel-module-java9.md)
  

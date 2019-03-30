@@ -8,5 +8,5 @@ Ajouter un deuxième service dans logistic, mais qui n'est pas publié et n'a do
 
 ---
 [Précédent : Modules Java9, les limites de l'outillage](./boum.md)
-<| [Retour](.) 
+<| [Retour](https://github.com/edouard-gv/ddd-java9) 
 

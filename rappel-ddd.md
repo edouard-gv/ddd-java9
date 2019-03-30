@@ -8,5 +8,5 @@ Les architectures de ce type vont bien avec la modularisation par domaine
   
 ---
 [Précédent : Architecture hexagonale](./rappel-architecture-hexagonale.md)
-<| [Retour](.) 
+<| [Retour](https://github.com/edouard-gv/ddd-java9) 
 |> [Suite : Module et organisation équipe](./rappel-organisation-modulaire.md)

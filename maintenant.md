@@ -26,5 +26,5 @@ Et ça n'a pas marché du premier coup ! Pour cela, lisez [la où j'ai trébuch�
 
 ---
 [Précédent : Une application à l'ancienne](./debut.md)
-<| [Retour](.) 
+<| [Retour](https://github.com/edouard-gv/ddd-java9) 
 |> [Suite : Modules Java9, les limites de l'outillage](./boum.md)
