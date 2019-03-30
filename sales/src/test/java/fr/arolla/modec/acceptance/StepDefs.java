@@ -7,9 +7,9 @@ import fr.arolla.modec.logistic.domain.Deliverable;
 import fr.arolla.modec.logistic.domain.DeliveryId;
 import fr.arolla.modec.logistic.domain.ShippingService;
 import fr.arolla.modec.logistic.domain.Weight;
-import fr.arolla.modec.logistic.domain.DeliverableRepository;
-import fr.arolla.modec.logistic.domain.ShippingServiceRepository;
-import fr.arolla.modec.logistic.domain.service.DeliveryService;
+import fr.arolla.modec.logistic.domain.Deliverables;
+import fr.arolla.modec.logistic.domain.ShippingServices;
+import fr.arolla.modec.logistic.domain.service.ShippingServicesCalculator;
 import fr.arolla.modec.sales.BusinessException;
 import fr.arolla.modec.sales.entity.*;
 import fr.arolla.modec.sales.repository.*;
@@ -39,21 +39,21 @@ public class StepDefs extends SpringBootBaseStepDefs {
     private ProductService productService;
     private CartService cartService;
     private Timestamp timestamp;
-    private ShippingServiceRepository shippingServiceRepository;
+    private ShippingServices shippingServices;
     private OrderService orderService;
     private CartId currentCartId;
     private OrderId currentOrderId;
-    private DeliverableRepository deliverableRepository;
+    private Deliverables deliverables;
     private DeliveryId currentDeliveryId;
 
-    public StepDefs(ProductRepository productRepository, DeliverableRepository deliverableRepository, Timestamp timestamp, ShippingServiceRepository shippingServiceRepository, CartRepository cartRepository, CartLineRepository cartLineRepository, OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
+    public StepDefs(ProductRepository productRepository, Deliverables deliverables, Timestamp timestamp, ShippingServices shippingServices, CartRepository cartRepository, CartLineRepository cartLineRepository, OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
         this.productRepository = productRepository;
-        this.deliverableRepository = deliverableRepository;
+        this.deliverables = deliverables;
         this.productService = new ProductService(productRepository);
-        DeliveryService deliveryService = new DeliveryService(shippingServiceRepository, deliverableRepository);
-        this.cartService = new CartService(cartRepository, productRepository, cartLineRepository, deliveryService);
+        ShippingServicesCalculator shippingServicesCalculator = new ShippingServicesCalculator(shippingServices, deliverables);
+        this.cartService = new CartService(cartRepository, productRepository, cartLineRepository, shippingServicesCalculator);
         this.timestamp = timestamp;
-        this.shippingServiceRepository = shippingServiceRepository;
+        this.shippingServices = shippingServices;
         this.orderService = new OrderService(cartRepository, timestamp, orderRepository, orderLineRepository);
     }
 
@@ -81,11 +81,11 @@ public class StepDefs extends SpringBootBaseStepDefs {
     @Given("^the following catalog:$")
     public void theFollowingCatalog(DataTable products) throws Throwable {
         productRepository.deleteAll();
-        deliverableRepository.deleteAll();
+        deliverables.deleteAll();
         List<Map<String, String>> lines = products.asMaps();
         for (Map<String, String> line : lines) {
             productRepository.save(new Product(new Sku(line.get("SKU")), line.get("name"), line.get("description")));
-            deliverableRepository.save(new Deliverable(
+            deliverables.save(new Deliverable(
                     new fr.arolla.modec.logistic.domain.Sku(line.get("SKU")),
                     line.get("name"),
                     new Weight(Float.parseFloat(line.get("weight")))
@@ -95,10 +95,10 @@ public class StepDefs extends SpringBootBaseStepDefs {
 
     @Given("^the following shipping services:$")
     public void theFollowingShippingServices(DataTable shippingServices) throws Throwable {
-        shippingServiceRepository.deleteAll();
+        this.shippingServices.deleteAll();
         List<Map<String, String>> lines = shippingServices.asMaps();
         for (Map<String, String> line : lines) {
-            shippingServiceRepository.save(new ShippingService(line.get("code"), line.get("carrier"), line.get("level")));
+            this.shippingServices.save(new ShippingService(line.get("code"), line.get("carrier"), line.get("level")));
         }
     }
 

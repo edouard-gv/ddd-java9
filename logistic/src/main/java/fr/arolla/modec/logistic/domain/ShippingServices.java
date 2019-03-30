@@ -1,8 +1,6 @@
 package fr.arolla.modec.logistic.domain;
 
-import fr.arolla.modec.logistic.domain.ShippingService;
-
-public interface ShippingServiceRepository {
+public interface ShippingServices {
     ShippingService findOneByCode(String code);
 
     void deleteAll();
