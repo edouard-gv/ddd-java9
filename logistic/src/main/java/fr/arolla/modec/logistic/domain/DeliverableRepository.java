@@ -1,7 +1,7 @@
-package fr.arolla.modec.logistic.repository;
+package fr.arolla.modec.logistic.domain;
 
-import fr.arolla.modec.logistic.entity.Deliverable;
-import fr.arolla.modec.logistic.entity.Sku;
+import fr.arolla.modec.logistic.domain.Deliverable;
+import fr.arolla.modec.logistic.domain.Sku;
 
 public interface DeliverableRepository {
     Deliverable findOneBySku(Sku sku);

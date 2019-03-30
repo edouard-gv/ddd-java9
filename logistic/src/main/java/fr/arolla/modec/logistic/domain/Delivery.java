@@ -1,7 +1,6 @@
-package fr.arolla.modec.logistic.entity;
+package fr.arolla.modec.logistic.domain;
 
 import javax.persistence.*;
-import java.util.Calendar;
 import java.util.List;
 
 @Entity

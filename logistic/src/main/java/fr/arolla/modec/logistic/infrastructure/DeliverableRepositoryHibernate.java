@@ -1,8 +1,8 @@
-package fr.arolla.modec.logistic.repository.impl;
+package fr.arolla.modec.logistic.infrastructure;
 
-import fr.arolla.modec.logistic.entity.Deliverable;
-import fr.arolla.modec.logistic.entity.Sku;
-import fr.arolla.modec.logistic.repository.DeliverableRepository;
+import fr.arolla.modec.logistic.domain.Deliverable;
+import fr.arolla.modec.logistic.domain.Sku;
+import fr.arolla.modec.logistic.domain.DeliverableRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

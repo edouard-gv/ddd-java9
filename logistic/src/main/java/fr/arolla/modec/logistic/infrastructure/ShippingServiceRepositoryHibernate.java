@@ -1,7 +1,7 @@
-package fr.arolla.modec.logistic.repository.impl;
+package fr.arolla.modec.logistic.infrastructure;
 
-import fr.arolla.modec.logistic.entity.ShippingService;
-import fr.arolla.modec.logistic.repository.ShippingServiceRepository;
+import fr.arolla.modec.logistic.domain.ShippingService;
+import fr.arolla.modec.logistic.domain.ShippingServiceRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

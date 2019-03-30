@@ -3,13 +3,13 @@ package fr.arolla.modec.acceptance;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import fr.arolla.modec.logistic.entity.Deliverable;
-import fr.arolla.modec.logistic.entity.DeliveryId;
-import fr.arolla.modec.logistic.entity.ShippingService;
-import fr.arolla.modec.logistic.entity.Weight;
-import fr.arolla.modec.logistic.repository.DeliverableRepository;
-import fr.arolla.modec.logistic.repository.ShippingServiceRepository;
-import fr.arolla.modec.logistic.service.DeliveryService;
+import fr.arolla.modec.logistic.domain.Deliverable;
+import fr.arolla.modec.logistic.domain.DeliveryId;
+import fr.arolla.modec.logistic.domain.ShippingService;
+import fr.arolla.modec.logistic.domain.Weight;
+import fr.arolla.modec.logistic.domain.DeliverableRepository;
+import fr.arolla.modec.logistic.domain.ShippingServiceRepository;
+import fr.arolla.modec.logistic.domain.service.DeliveryService;
 import fr.arolla.modec.sales.BusinessException;
 import fr.arolla.modec.sales.entity.*;
 import fr.arolla.modec.sales.repository.*;
@@ -86,7 +86,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
         for (Map<String, String> line : lines) {
             productRepository.save(new Product(new Sku(line.get("SKU")), line.get("name"), line.get("description")));
             deliverableRepository.save(new Deliverable(
-                    new fr.arolla.modec.logistic.entity.Sku(line.get("SKU")),
+                    new fr.arolla.modec.logistic.domain.Sku(line.get("SKU")),
                     line.get("name"),
                     new Weight(Float.parseFloat(line.get("weight")))
             ));

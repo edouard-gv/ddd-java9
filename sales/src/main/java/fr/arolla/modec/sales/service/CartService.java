@@ -1,7 +1,7 @@
 package fr.arolla.modec.sales.service;
 
-import fr.arolla.modec.logistic.entity.*;
-import fr.arolla.modec.logistic.service.DeliveryService;
+import fr.arolla.modec.logistic.domain.*;
+import fr.arolla.modec.logistic.domain.service.DeliveryService;
 import fr.arolla.modec.sales.entity.Quantity;
 import fr.arolla.modec.sales.entity.Sku;
 import fr.arolla.modec.sales.entity.*;
@@ -58,9 +58,9 @@ public class CartService {
         return new Delivery(cart.getLines()
                 .stream()
                 .map(cartLine -> new DeliveryLine(
-                        new fr.arolla.modec.logistic.entity.Sku(cartLine.getProductSku().getSku()),
+                        new fr.arolla.modec.logistic.domain.Sku(cartLine.getProductSku().getSku()),
                         cartLine.getProductName(),
-                        new fr.arolla.modec.logistic.entity.Quantity(cartLine.getQuantity().getQuantity())))
+                        new fr.arolla.modec.logistic.domain.Quantity(cartLine.getQuantity().getQuantity())))
                 .collect(Collectors.toList()),
                 cart.getCustomer() != null ? new Contact(cart.getCustomer().getEmail()) : null,
                 cart.getShippingAddress() != null ? new Address(

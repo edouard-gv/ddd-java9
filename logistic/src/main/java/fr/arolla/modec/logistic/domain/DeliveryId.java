@@ -1,4 +1,4 @@
-package fr.arolla.modec.logistic.entity;
+package fr.arolla.modec.logistic.domain;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;

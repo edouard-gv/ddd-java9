@@ -1,11 +1,11 @@
-package fr.arolla.modec.logistic.service;
+package fr.arolla.modec.logistic.domain.service;
 
-import fr.arolla.modec.logistic.entity.Deliverable;
-import fr.arolla.modec.logistic.entity.Delivery;
-import fr.arolla.modec.logistic.entity.ShippingService;
-import fr.arolla.modec.logistic.entity.Sku;
-import fr.arolla.modec.logistic.repository.DeliverableRepository;
-import fr.arolla.modec.logistic.repository.ShippingServiceRepository;
+import fr.arolla.modec.logistic.domain.Deliverable;
+import fr.arolla.modec.logistic.domain.Delivery;
+import fr.arolla.modec.logistic.domain.ShippingService;
+import fr.arolla.modec.logistic.domain.Sku;
+import fr.arolla.modec.logistic.domain.DeliverableRepository;
+import fr.arolla.modec.logistic.domain.ShippingServiceRepository;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
-package fr.arolla.modec.logistic.service;
+package fr.arolla.modec.logistic.domain.service;
 
-import fr.arolla.modec.logistic.entity.*;
-import fr.arolla.modec.logistic.repository.DeliverableRepository;
-import fr.arolla.modec.logistic.repository.ShippingServiceRepository;
+import fr.arolla.modec.logistic.domain.*;
+import fr.arolla.modec.logistic.domain.DeliverableRepository;
+import fr.arolla.modec.logistic.domain.ShippingServiceRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
