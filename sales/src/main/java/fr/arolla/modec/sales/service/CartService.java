@@ -1,29 +1,24 @@
 package fr.arolla.modec.sales.service;
 
-import fr.arolla.modec.logistic.domain.*;
-import fr.arolla.modec.sales.entity.Quantity;
-import fr.arolla.modec.sales.entity.Sku;
 import fr.arolla.modec.sales.entity.*;
 import fr.arolla.modec.sales.repository.CartLineRepository;
 import fr.arolla.modec.sales.repository.CartRepository;
 import fr.arolla.modec.sales.repository.ProductRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CartService {
 
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final CartLineRepository cartLineRepository;
-    private final ICalculateShippingServices shippingServicesCalculator;
+    private final IAccessToLogistic logisticAccess;
 
-    public CartService(CartRepository cartRepository, ProductRepository productRepository, CartLineRepository cartLineRepository, ICalculateShippingServices shippingServicesCalculator) {
+    public CartService(CartRepository cartRepository, ProductRepository productRepository, CartLineRepository cartLineRepository, IAccessToLogistic logisticAccess) {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.cartLineRepository = cartLineRepository;
-        this.shippingServicesCalculator = shippingServicesCalculator;
+        this.logisticAccess = logisticAccess;
     }
 
     public CartId createCart() {
@@ -46,33 +41,12 @@ public class CartService {
         cartRepository.findById(cartId).get().setShippingAddress(address);
     }
 
-    public List<ShippingService> getShippingServices(CartId cartId) {
-        List<ShippingService> servicesFound = new ArrayList<>();
-        Cart cart = cartRepository.findById(cartId).get();
-        Delivery delivery = buildDeliveryFromCart(cart);
-        return shippingServicesCalculator.calculate(delivery);
-    }
-
-    private Delivery buildDeliveryFromCart(Cart cart) {
-        return new Delivery(cart.getLines()
-                .stream()
-                .map(cartLine -> new DeliveryLine(
-                        new fr.arolla.modec.logistic.domain.Sku(cartLine.getProductSku().getSku()),
-                        cartLine.getProductName(),
-                        new fr.arolla.modec.logistic.domain.Quantity(cartLine.getQuantity().getQuantity())))
-                .collect(Collectors.toList()),
-                cart.getCustomer() != null ? new Contact(cart.getCustomer().getEmail()) : null,
-                cart.getShippingAddress() != null ? new Address(
-                        cart.getShippingAddress().getRecipientName(),
-                        cart.getShippingAddress().getLine1(),
-                        cart.getShippingAddress().getCity(),
-                        cart.getShippingAddress().getZipCode(),
-                        cart.getShippingAddress().getIsoCountryCode()
-                        ) : null);
-    }
-
     public void setRecipient(CartId cartId, String fullName, String eMail) {
         Customer customer = new Customer(fullName, eMail);
         cartRepository.findById(cartId).get().setCustomer(customer);
+    }
+
+    public List<ShippingService> getShippingServices(CartId cartId) {
+        return logisticAccess.getShippingServices(cartId);
     }
 }

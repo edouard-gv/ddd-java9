@@ -3,13 +3,18 @@ package fr.arolla.modec.acceptance;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import fr.arolla.modec.logistic.domain.*;
+import fr.arolla.modec.logistic.domain.Deliverable;
+import fr.arolla.modec.logistic.domain.Deliverables;
+import fr.arolla.modec.logistic.domain.DeliveryId;
+import fr.arolla.modec.logistic.domain.ShippingServices;
+import fr.arolla.modec.logistic.domain.Weight;
 import fr.arolla.modec.sales.BusinessException;
 import fr.arolla.modec.sales.entity.Quantity;
 import fr.arolla.modec.sales.entity.Sku;
 import fr.arolla.modec.sales.entity.*;
 import fr.arolla.modec.sales.repository.*;
 import fr.arolla.modec.sales.service.CartService;
+import fr.arolla.modec.sales.service.IAccessToLogistic;
 import fr.arolla.modec.sales.service.OrderService;
 import fr.arolla.modec.sales.service.ProductService;
 import fr.arolla.modec.sales.service.system.Timestamp;
@@ -37,18 +42,18 @@ public class StepDefs extends SpringBootBaseStepDefs {
     private Timestamp timestamp;
     private ShippingServices shippingServices;
     private OrderService orderService;
-    private ICalculateShippingServices shippingServicesCalculator;
+    private IAccessToLogistic logisticAccess;
     private CartId currentCartId;
     private OrderId currentOrderId;
     private Deliverables deliverables;
     private DeliveryId currentDeliveryId;
 
-    public StepDefs(ProductRepository productRepository, Deliverables deliverables, Timestamp timestamp, ShippingServices shippingServices, CartRepository cartRepository, CartLineRepository cartLineRepository, OrderRepository orderRepository, OrderLineRepository orderLineRepository, ICalculateShippingServices shippingServicesCalculator) {
+    public StepDefs(ProductRepository productRepository, Deliverables deliverables, Timestamp timestamp, ShippingServices shippingServices, CartRepository cartRepository, CartLineRepository cartLineRepository, OrderRepository orderRepository, OrderLineRepository orderLineRepository, IAccessToLogistic logisticAccess) {
         this.productRepository = productRepository;
         this.deliverables = deliverables;
         this.productService = new ProductService(productRepository);
-        this.shippingServicesCalculator = shippingServicesCalculator;
-        this.cartService = new CartService(cartRepository, productRepository, cartLineRepository, shippingServicesCalculator);
+        this.logisticAccess = logisticAccess;
+        this.cartService = new CartService(cartRepository, productRepository, cartLineRepository, logisticAccess);
         this.timestamp = timestamp;
         this.shippingServices = shippingServices;
         this.orderService = new OrderService(cartRepository, timestamp, orderRepository, orderLineRepository);
@@ -95,7 +100,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
         this.shippingServices.deleteAll();
         List<Map<String, String>> lines = shippingServices.asMaps();
         for (Map<String, String> line : lines) {
-            this.shippingServices.save(new ShippingService(line.get("code"), line.get("carrier"), line.get("level")));
+            this.shippingServices.save(new fr.arolla.modec.logistic.domain.ShippingService(line.get("code"), line.get("carrier"), line.get("level")));
         }
     }
 
