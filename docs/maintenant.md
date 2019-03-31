@@ -1,3 +1,8 @@
+---
+parent: Modules Java 9 et Architecture hexagonale
+nav_order: 3
+---
+
 ## Deux hexagones, deux modules
 
 Voilà où en est la [branche haxagonal](https://github.com/edouard-gv/ddd-java9/tree/hexagonal). 
@@ -22,9 +27,4 @@ Les étapes du refactoring proposé sont a priori explicitées dans l'historique
 1. Côté sales, isolation de l'accès à logistic dans un adapteur, via interface
 1. Et, enfin, tentative d'utilisation des modules java 9 pour assurer que les brebis seront bien gardées à long terme
 
-Et ça n'a pas marché du premier coup ! Pour cela, lisez [la où j'ai trébuché](./boum.md).
-
----
-[Précédent : Une application à l'ancienne](./debut.md)
-<| [Retour](https://github.com/edouard-gv/ddd-java9) 
-|> [Suite : Modules Java9, les limites de l'outillage](./boum.md)
+Et ça n'a pas marché du premier coup ! Pour cela, lisez [là où j'ai trébuché](boum.md).

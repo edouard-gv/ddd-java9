@@ -1,3 +1,9 @@
+---
+title: Les modules Java 9
+parent: Quelques rappels
+nav_order: 4
+---
+
 ## Les modules Java 9
 
 On ajoute un fichier indiquant
@@ -6,8 +12,5 @@ On ajoute un fichier indiquant
 
 Ce n'est pas une gestion des dépendances au sens de version : maven reste nécessaire. Je ne rentre pas dans le détail, ni ses limites (par exemple, quand on fait ou utilise de l'introspection).
 
----
-[Précédent : Module et organisation équipe](./rappel-organisation-modulaire.md)
-<| [Retour](https://github.com/edouard-gv/ddd-java9) 
-|> [Suite : Une application à l'ancienne](./debut.md)
+Une fois ces rappels faits, il reste à donc à partir d'[une application à l'ancienne](./debut.md).
  

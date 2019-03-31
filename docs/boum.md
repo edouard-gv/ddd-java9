@@ -1,4 +1,11 @@
-## Protéger par des modules java 9 : là où j'ai trébuché. 
+---
+parent: Modules Java 9 et Architecture hexagonale
+nav_order: 4
+---
+
+## Protéger par des modules java 9 : les limites de l'outillage.
+
+Il ne reste plus qu'à rajouter les fichier module-info.java... et là, je trébuche. 
 
 Le soucis semble que l'outillage n'est pas prêt. En bref: 
 > Je n'ai réussi à le faire marcher qu'avec Ant !
@@ -10,7 +17,4 @@ En vrac :
 
 En tous cas, on comprend vite qu'une règle fondamentale, mais très contraignante, de Java 9, est qu'on n'a pas le droit d'avoir le même package dans deux modules ("split package").
 
----
-[Précédent : Deux modules pour deux hexagones](./maintenant.md)
-<| [Retour](https://github.com/edouard-gv/ddd-java9) 
-|> [Suite : Pour aller plus loin](./suite.md)
+Mais que faire donc [pour aller plus loin](suite.md) ?

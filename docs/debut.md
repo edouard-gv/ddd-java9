@@ -1,3 +1,8 @@
+---
+parent: Modules Java 9 et Architecture hexagonale
+nav_order: 2
+---
+
 ## Une application propre, mais à l'ancienne 
 
 Ce que vous trouverez sur La [branche master](https://github.com/edouard-gv/ddd-java9) : les vielles bonnes pratiques 
@@ -18,8 +23,5 @@ Mais c'est déjà un peu plus :
 - Approche tests first
   - Il n'y que les tests qui fonctionnent, pas possible de lancer l'application. 
   - Pas de test sur les get des Optional (car pas les tests écrits).
-  
----
-[Précédent : les modules Java9 (Jigsaw)](./rappel-module-java9.md)
-<| [Retour](https://github.com/edouard-gv/ddd-java9) 
-|> [Suite : Deux modules pour deux hexagones](./maintenant.md)
+
+Une fois cela fait, l'objectif a été de refactorer cela en [deux modules pour deux hexagones](maintenant.md).

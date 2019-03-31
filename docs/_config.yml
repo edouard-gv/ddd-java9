@@ -1,0 +1,5 @@
+remote_theme: pmarsceill/just-the-docs
+
+aux_links:
+  "Accéder au code sur Github":
+    - "//github.com/edouard-gv/ddd-java9"

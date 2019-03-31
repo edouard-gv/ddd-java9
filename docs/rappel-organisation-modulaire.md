@@ -1,4 +1,10 @@
-Module et organisation d'équipe
+---
+title: Modules et organisation d'équipe
+parent: Quelques rappels
+nav_order: 3
+---
+
+## Modules et organisation d'équipe
 
 La modularisation d'un application permet d'améliorer l'organisation des équipes (loi de Conway, approche sociotechnique) 
 - mapping sous-domaines / équipes, pourvoit indépendance et cohérence. 
@@ -9,8 +15,5 @@ La modularisation d'un application permet d'améliorer l'organisation des équip
   
 Aussi, liens externe et interne qu'il y a dans certaines équipes peut ressembler aux adapteurs de type service applicatif d'une part et adapteur repository d'autre part.
   
----
-[Précédent : DDD](./rappel-ddd.md)
-<| [Retour](https://github.com/edouard-gv/ddd-java9) 
-|> [Suite : les modules Java9 (Jigsaw)](./rappel-module-java9.md)
+[Suite : les modules Java 9 (Jigsaw)](./rappel-module-java9.md)
  
