@@ -1,6 +1,7 @@
 ---
 title: Modules et organisation d'équipe
 parent: Quelques rappels
+grand_parent: Modules Java 9 et Architecture hexagonale
 nav_order: 3
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: DDD et architecture modulaire
 parent: Quelques rappels
+grand_parent: Modules Java 9 et Architecture hexagonale
 nav_order: 2
 ---
 
