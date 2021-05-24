@@ -4,7 +4,7 @@ import javax.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
-public class Sku {
+public class Sku implements Comparable<Sku> {
     private String sku;
 
     public Sku() { //for JPA
@@ -36,5 +36,10 @@ public class Sku {
     @Override
     public int hashCode() {
         return Objects.hash(sku);
+    }
+
+    @Override
+    public int compareTo(Sku sku) {
+        return this.sku.compareTo(sku.sku);
     }
 }

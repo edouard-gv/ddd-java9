@@ -3,7 +3,7 @@ package fr.arolla.modec.entity;
 import javax.persistence.*;
 
 @Entity
-public class Product {
+public class Product implements Comparable<Product> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -43,5 +43,21 @@ public class Product {
         this.name = name;
         this.description = description;
         this.weight = weight;
+    }
+
+    @Override
+    public int compareTo(Product product) {
+        return this.sku.compareTo(product.sku);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", sku=" + sku +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", weight=" + weight +
+                '}';
     }
 }

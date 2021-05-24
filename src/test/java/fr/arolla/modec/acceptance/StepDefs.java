@@ -59,6 +59,65 @@ public class StepDefs extends SpringBootBaseStepDefs {
         }
     }
 
+    public Product productEntry(Map<String, String> entry) {
+        return new Product(new Sku(entry.get("SKU")), entry.get("name"), entry.get("description"), new Weight(Float.parseFloat(entry.get("weight"))));
+    }
+
+    public ShippingService shippingServiceEntry(Map<String, String> entry) {
+        return new ShippingService(entry.get("code"), entry.get("carrier"), entry.get("level"));
+    }
+
+    @Given("the default background")
+    public void theDefaultBackground() {
+        productRepository.deleteAll();
+        shippingServiceRepository.deleteAll();
+        productRepository.save(new Product(new Sku("7612345678900"), "bike", "A default bike", new Weight(10)));
+        productRepository.save(new Product(new Sku("7612345678101"), "feather", "A light product", new Weight(0.1)));
+        shippingServiceRepository.save(new ShippingService("Chrono10", "Chronopost", "j+1 avant 13h"));
+        shippingServiceRepository.save(new ShippingService("laposte", "La Poste", "Standard"));
+        Calendar now = new GregorianCalendar();
+        now.setTime(Date.from(Instant.from(ZonedDateTime.parse("2018-10-08T13:00:00+01:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME))));
+        Mockito.when(timestamp.getCurrentDate()).thenReturn(now);
+    }
+
+    @Then("now should be {string}")
+    public void nowShouldBe(String stringDate) {
+        assertThat(timestamp.getCurrentDate().getTime()).isEqualTo(Date.from(Instant.from(ZonedDateTime.parse(stringDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME))));
+    }
+
+    @Then("{string} should be the default locale")
+    public void shouldBeTheDefaultLocale(String arg0) {
+        //local feature not implemented
+    }
+
+    @Then("the following products should be in the catalog, and no others:")
+    public void theFollowingProductsShouldBeInTheCatalogAndNoOthers(DataTable expectedProducts) throws Throwable {
+        List<Map<String, String>> actualList = new ArrayList<>();
+
+        for (Product product : productService.getList()) {
+            Map<String, String> productMap = new HashMap<>();
+            productMap.put("SKU", product.getSku().getSku());
+            productMap.put("description", product.getDescription());
+            productMap.put("name", product.getName());
+            productMap.put("weight", ""+product.getWeight().getWeight());
+            actualList.add(productMap);
+        }
+        assertThat(actualList).isEqualTo(expectedProducts.asMaps());
+    }
+
+    @Then("following shipping services should be declared, and no others:")
+    public void followingShippingServicesShouldBeDeclaredAndNoOthers(DataTable shippingServices) throws Throwable {
+        List<Map<String, String>> actualList = new ArrayList<>();
+
+        for (ShippingService shippingService : shippingServiceRepository.findAll()) {
+            Map<String, String> shippingServiceMap = new HashMap<>();
+            shippingServiceMap.put("code", shippingService.getCode());
+            shippingServiceMap.put("label", shippingService.getCarrier() + " " + shippingService.getLevel());
+            actualList.add(shippingServiceMap);
+        }
+        assertThat(actualList).isEqualTo(shippingServices.asMaps());
+    }
+
     @Given("^now is \"([^\"]*)\"$")
     public void nowIs(String stringDate) throws Throwable {
         Calendar now = new GregorianCalendar();
@@ -74,18 +133,16 @@ public class StepDefs extends SpringBootBaseStepDefs {
     @Given("^the following catalog:$")
     public void theFollowingCatalog(DataTable products) throws Throwable {
         productRepository.deleteAll();
-        List<Map<String, String>> lines = products.asMaps();
-        for (Map<String, String> line : lines) {
-            productRepository.save(new Product(new Sku(line.get("SKU")), line.get("name"), line.get("description"), new Weight(Float.parseFloat(line.get("weight")))));
+        for (Map<String, String> productEntry : products.asMaps()) {
+            productRepository.save(productEntry(productEntry));
         }
     }
 
     @Given("^the following shipping services:$")
     public void theFollowingShippingServices(DataTable shippingServices) throws Throwable {
         shippingServiceRepository.deleteAll();
-        List<Map<String, String>> lines = shippingServices.asMaps();
-        for (Map<String, String> line : lines) {
-            shippingServiceRepository.save(new ShippingService(line.get("code"), line.get("carrier"), line.get("level")));
+        for (Map<String, String> shippingServiceEntry : shippingServices.asMaps()) {
+            shippingServiceRepository.save(shippingServiceEntry(shippingServiceEntry));
         }
     }
 
@@ -104,20 +161,6 @@ public class StepDefs extends SpringBootBaseStepDefs {
     @Given("^\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" in \"([^\"]*)\" is set as the shipping address of this cart$")
     public void inIsSetAsTheShippingAddressOfThisCart(String fullName, String line1, String city, String zipCode, String isoCountryCode) throws Throwable {
         cartService.setShippingAddress(this.currentCartId, fullName, line1, city, zipCode, isoCountryCode);
-    }
-
-    @Transactional
-    @Then("^product catalog should contain:$")
-    public void productCatalogShouldContain(DataTable products) throws Throwable {
-        List<Map<String, String>> actualList = new ArrayList<>();
-
-        for (Product product : productService.getList()) {
-            Map<String, String> productMap = new HashMap<>();
-            productMap.put("SKU", product.getSku().getSku());
-            productMap.put("name", product.getName());
-            actualList.add(productMap);
-        }
-        assertThat(actualList).isEqualTo(products.asMaps());
     }
 
     @Transactional
@@ -174,7 +217,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
 
         for (Order order : orderService.getOrdersForEMail(eMail)) {
             Map<String, String> orderMap = new HashMap<>();
-            orderMap.put("creation date", new SimpleDateFormat("YYYY-MM-dd").format(order.getCreationDate().getTime()));
+            orderMap.put("creation date", new SimpleDateFormat("yyyy-MM-dd").format(order.getCreationDate().getTime()));
             orderMap.put("status", order.getStatus().toString());
             actualList.add(orderMap);
         }
