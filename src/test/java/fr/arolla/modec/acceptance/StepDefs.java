@@ -85,14 +85,13 @@ public class StepDefs extends SpringBootBaseStepDefs {
         productRepository.save(new Product(new Sku("7612345678101"), "feather", "A light product", new Weight(0.1)));
         shippingServiceRepository.save(new ShippingService("Chrono10", "Chronopost", "j+1 avant 13h"));
         shippingServiceRepository.save(new ShippingService("laposte", "La Poste", "Standard"));
-        Calendar now = new GregorianCalendar();
-        now.setTime(Date.from(Instant.from(ZonedDateTime.parse("2018-10-08T13:00:00+01:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME))));
-        Mockito.when(timestamp.getCurrentDate()).thenReturn(now);
+        Instant instant = Instant.from(ZonedDateTime.parse("2018-10-08T13:00:00+01:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        clock.setInstant(instant);
     }
 
     @Then("now should be {string}")
     public void nowShouldBe(String stringDate) {
-        assertThat(timestamp.getCurrentDate().getTime()).isEqualTo(Date.from(Instant.from(ZonedDateTime.parse(stringDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME))));
+        assertThat(clock.instant()).isEqualTo(Instant.from(ZonedDateTime.parse(stringDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME)));
     }
 
     @Then("{string} should be the default locale")
@@ -101,7 +100,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
     }
 
     @Then("the following products should be in the catalog, and no others:")
-    public void theFollowingProductsShouldBeInTheCatalogAndNoOthers(DataTable expectedProducts) throws Throwable {
+    public void theFollowingProductsShouldBeInTheCatalogAndNoOthers(DataTable expectedProducts) {
         List<Map<String, String>> actualList = new ArrayList<>();
 
         for (Product product : productService.getList()) {
@@ -116,7 +115,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
     }
 
     @Then("following shipping services should be declared, and no others:")
-    public void followingShippingServicesShouldBeDeclaredAndNoOthers(DataTable shippingServices) throws Throwable {
+    public void followingShippingServicesShouldBeDeclaredAndNoOthers(DataTable shippingServices) {
         List<Map<String, String>> actualList = new ArrayList<>();
 
         for (ShippingService shippingService : shippingServiceRepository.findAll()) {
@@ -129,18 +128,18 @@ public class StepDefs extends SpringBootBaseStepDefs {
     }
 
     @Given("^now is \"([^\"]*)\"$")
-    public void nowIs(String stringDate) throws Throwable {
+    public void nowIs(String stringDate) {
         Instant instant = Instant.from(ZonedDateTime.parse(stringDate, DateTimeFormatter.ISO_OFFSET_DATE_TIME));
         clock.setInstant(instant);
     }
 
     @Given("^\"([^\"]*)\" as default locale$")
-    public void asDefaultLocale(String arg0) throws Throwable {
+    public void asDefaultLocale(String arg0) {
         //Locale features not implemented
     }
 
     @Given("^the following catalog:$")
-    public void theFollowingCatalog(DataTable products) throws Throwable {
+    public void theFollowingCatalog(DataTable products) {
         productRepository.deleteAll();
         for (Map<String, String> productEntry : products.asMaps()) {
             productRepository.save(productEntry(productEntry));
@@ -148,7 +147,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
     }
 
     @Given("^the following shipping services:$")
-    public void theFollowingShippingServices(DataTable shippingServices) throws Throwable {
+    public void theFollowingShippingServices(DataTable shippingServices) {
         shippingServiceRepository.deleteAll();
         for (Map<String, String> shippingServiceEntry : shippingServices.asMaps()) {
             shippingServiceRepository.save(shippingServiceEntry(shippingServiceEntry));
@@ -156,24 +155,24 @@ public class StepDefs extends SpringBootBaseStepDefs {
     }
 
     @Given("^a new cart is created$")
-    public void aNewCartIsCreated() throws Throwable {
+    public void aNewCartIsCreated() {
         this.currentCartId = cartService.createCart();
     }
 
     @Given("^product \"([^\"]*)\" is added to this cart$")
-    public void productIsAddedToThisCart(String sku) throws Throwable {
+    public void productIsAddedToThisCart(String sku) {
         cartService.addToCart(this.currentCartId, new Sku(sku), new Quantity(1));
     }
 
     @Given("^\"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" in \"([^\"]*)\" is set as the shipping address of this cart$")
-    public void inIsSetAsTheShippingAddressOfThisCart(String fullName, String line1, String city, String zipCode, String isoCountryCode) throws Throwable {
+    public void inIsSetAsTheShippingAddressOfThisCart(String fullName, String line1, String city, String zipCode, String isoCountryCode) {
         ShippingAddress shippingAddress = new ShippingAddress(fullName, line1, city, zipCode, isoCountryCode);
         cartService.setShippingAddress(this.currentCartId, shippingAddress);
     }
 
     @Transactional
     @Then("^cart content should contain:$")
-    public void cartContentShouldContain(DataTable cartLines) throws Throwable {
+    public void cartContentShouldContain(DataTable cartLines) {
         List<Map<String, String>> actualList = new ArrayList<>();
 
         for (CartLine cartLine : cartService.getLines(this.currentCartId)) {
@@ -187,7 +186,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
     }
 
     @Then("^the shipping services available for this cart should be:$")
-    public void theShippingServicesAvailableForThisCartShouldBe(DataTable shippingServices) throws Throwable {
+    public void theShippingServicesAvailableForThisCartShouldBe(DataTable shippingServices) {
         List<Map<String, String>> actualList = new ArrayList<>();
 
         for (ShippingService shippingService : cartService.getShippingServices(this.currentCartId)) {
@@ -200,9 +199,9 @@ public class StepDefs extends SpringBootBaseStepDefs {
     }
 
     @And("^\"([^\"]*)\" with email address \"([^\"]*)\" is set as the recipient$")
-    public void withEmailAdressIsSetAsTheRecipient(String fullName, String eMail) throws Throwable {
-        Recipient recipient = new Recipient(fullName, eMail);
-        cartService.setRecipient(currentCartId, recipient);
+    public void withEmailAdressIsSetAsTheRecipient(String fullName, String eMail) {
+        Customer customer = new Customer(fullName, eMail);
+        cartService.setCustomer(currentCartId, customer);
     }
 
     @And("^order is validated$")
@@ -211,12 +210,12 @@ public class StepDefs extends SpringBootBaseStepDefs {
     }
 
     @And("^order should not be validated$")
-    public void orderCannotBeValidated() throws Throwable {
+    public void orderCannotBeValidated() {
         assertThatThrownBy(() -> orderService.createOrderFromCart(currentCartId)).isInstanceOf(BusinessException.class);
     }
 
     @Then("^the historical orders for recipient \"([^\"]*)\" should be:$")
-    public void theHistoricalOrdersForRecipientShouldBe(String eMail, DataTable orders) throws Throwable {
+    public void theHistoricalOrdersForRecipientShouldBe(String eMail, DataTable orders) {
         List<Map<String, String>> actualList = new ArrayList<>();
 
         for (Order order : orderService.getOrdersForEMail(eMail)) {
@@ -229,7 +228,7 @@ public class StepDefs extends SpringBootBaseStepDefs {
     }
 
     @And("^delivery is validated$")
-    public void deliveryIsValidated() throws Throwable {
+    public void deliveryIsValidated() {
         currentDeliveryId = deliveryService.createDeliveryFromOrder(currentOrderId);
     }
 }

@@ -52,6 +52,6 @@ public class OrderService {
 
     @Transactional
     public List<Order> getOrdersForEMail(String eMail) {
-        return orderRepository.findByRecipientEmail(eMail);
+        return orderRepository.findByCustomerEmail(eMail);
     }
 }

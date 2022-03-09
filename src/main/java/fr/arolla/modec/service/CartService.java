@@ -69,7 +69,7 @@ public class CartService {
     }
 
     @Transactional
-    public void setRecipient(CartId cartId, Customer customer) {
+    public void setCustomer(CartId cartId, Customer customer) {
         findOrFail(cartId).setCustomer(customer);
     }
 
