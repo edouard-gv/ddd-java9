@@ -2,6 +2,10 @@ Feature: default cart
 
   Background:
     Given the default background
+    Then the following products should be in the catalog, and no others:
+      | SKU           | name    | description     | weight |
+      | 7612345678900 | bike    | A default bike  | 10.0   |
+      | 7612345678101 | feather | A light product | 0.1    |
 
   Scenario: E2E with intermediate checks
     Given a new cart is created
